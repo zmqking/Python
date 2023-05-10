@@ -5,10 +5,10 @@
 @Author  : king
 @Desc    : 
 """
-import asyncio
-import aiohttp
-import time
-import os
+# import asyncio
+# import aiohttp
+# import time
+# import os
 import requests
 import pymysql
 from lxml import etree
@@ -87,6 +87,7 @@ def db_connect():
     cursor.execute('select version()')
     data = cursor.fetchone()
     print(data)
+    cursor.close()
 
 
 def getHtml(url):
