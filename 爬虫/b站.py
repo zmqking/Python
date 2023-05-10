@@ -5,10 +5,10 @@
 @Author  : king
 @Desc    : 
 """
-import asyncio
-import aiohttp
-import time
-import os
+# import asyncio
+# import aiohttp
+# import time
+# import os
 import requests
 import pymysql
 from lxml import etree
@@ -87,6 +87,7 @@ def db_connect():
     cursor.execute('select version()')
     data = cursor.fetchone()
     print(data)
+    cursor.close()
 
 
 def getHtml(url):
@@ -103,7 +104,7 @@ def getHtml(url):
                     writer.writerow(item)
 
 
-# url = "https://api.bilibili.com/x/web-interface/wbi/search/all/v2"
-# getHtml(url)
+url = "https://api.bilibili.com/x/web-interface/wbi/search/all/v2"
+getHtml(url)
 
-db_connect()
+# db_connect()
