@@ -7,7 +7,7 @@
 """
 import asyncio
 import aiohttp
-import requests
+# import requests
 import time
 import os
 
@@ -117,7 +117,7 @@ if __name__ == '__main__':
 
 # <editor-fold desc="同步下载百度图片">
 
-from retrying import retry
+# from retrying import retry
 
 # 重试包
 # @retry(stop_max_attempt_number=3)

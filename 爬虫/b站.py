@@ -103,7 +103,7 @@ def getHtml(url):
                     writer.writerow(item)
 
 
-# url = "https://api.bilibili.com/x/web-interface/wbi/search/all/v2"
-# getHtml(url)
+url = "https://api.bilibili.com/x/web-interface/wbi/search/all/v2"
+getHtml(url)
 
-db_connect()
+# db_connect()
