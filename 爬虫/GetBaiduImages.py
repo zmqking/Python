@@ -7,7 +7,7 @@
 """
 import asyncio
 import aiohttp
-import requests
+# import requests
 import time
 import os
 
