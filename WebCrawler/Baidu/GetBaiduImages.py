@@ -10,6 +10,7 @@ import aiohttp
 # import requests
 import time
 import os
+from queue import Queue
 
 heads = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36'
@@ -17,13 +18,11 @@ heads = {
 
 count = 0
 
-
 # <editor-fold desc="高性能下载百度图片版本">
 async def getImgurls(url):
     async with aiohttp.ClientSession()as client:
         response = await client.get(url, headers=heads)
         dict = await response.json()
-
         urls = []
         for item in dict['data']:
             if len(item) > 0 and item['thumbURL'] != None and item['thumbURL'] != '':
@@ -38,22 +37,21 @@ async def downloadImgs(url):
             task = asyncio.create_task(writeImgFile(client, i))
             await task
 
-
 async def writeImgFile(client, i):
     response = await client.get(i, headers=heads)
     global count
     count += 1
+
     with open(f'imgs/{count}.jpg', 'wb') as f:
         f.write(await response.read())
 
 
 if __name__ == '__main__':
     url = 'https://image.baidu.com/search/acjson?tn=resultjson_com&logid=9442100676687252916&ipn=rj&ct=201326592&is=&fp=result&fr=&word=张靓颖&cg=star&queryWord=张靓颖&cl=2&lm=-1&ie=utf-8&oe=utf-8&adpicid=&st=-1&z=&ic=&hd=&latest=&copyright=&s=&se=&tab=&width=&height=&face=0&istype=2&qc=&nc=1&expermode=&nojc=&isAsync=&pn=30&rn=30&gsm=1e&1683115771526='
-    if not os.path.exists('imgs'):
-        os.mkdir('imgs')
+    if not os.path.exists('../imgs'):
+        os.mkdir('../imgs')
     start = time.time()
     # asyncio.run(downloadImgs(url))
-
     loop = asyncio.get_event_loop()
     loop.run_until_complete(downloadImgs(url))
 

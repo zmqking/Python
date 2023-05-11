@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-@File    : 代理.py
+@File    : Proxy.py
 @Time    : 4/18/2023 9:43 PM
 @Author  : king
 @Desc    : 

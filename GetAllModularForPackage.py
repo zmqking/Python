@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-@File    : 获取某个包里面的所有模块.py
+@File    : GetAllModularForPackage.py
 @Time    : 5/5/2023 9:04 PM
 @Author  : king
 @Desc    : 
