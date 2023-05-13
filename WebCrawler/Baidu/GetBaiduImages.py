@@ -33,9 +33,12 @@ async def getImgurls(url):
 async def downloadImgs(url):
     urls = await getImgurls(url)
     async with aiohttp.ClientSession()as client:
+        tasks = []
         for i in urls:
             task = asyncio.create_task(writeImgFile(client, i))
-            await task
+            tasks.append(task)
+            # await task
+        await asyncio.wait(tasks)# 比上一行单个await快了蛮多 0.6s
 
 async def writeImgFile(client, i):
     response = await client.get(i, headers=heads)

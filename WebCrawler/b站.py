@@ -95,6 +95,7 @@ def getHtml(url):
     with open('b站.csv', 'a', encoding='utf-8', newline='')as f:
         file_names = ['作者', '地址', '描述', '类型']
         writer = csv.DictWriter(f, fieldnames=file_names)
+        writer.writeheader()
         response = requests.get(url, headers=head, cookies=cookies, params=params)
         js = response.json()
         for item in js['data']['result']:
