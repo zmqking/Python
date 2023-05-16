@@ -27,38 +27,32 @@ def operationDb():
             cursor.execute(sql)
             print('-------创建成功-------')
             # 插入四条数据
-            sql = '''
-                insert into student values(%s,%s,%s,%s,%s);
-            '''
+            sql = 'insert into student(name ,age,sex,hobbies) values(%s,%s,%s,%s);'
             val = [
-                (0, 'king', 20, '男', '电影，新闻'),
-                (0, 'andy', 60, '男', '唱歌'),
-                (0, 'kelly', 50, '女', '跳舞'),
-                (0, 'jay', 40, '男', '游泳，下棋')
+                ('king', 20, '男', '电影，新闻'),
+                ('andy', 60, '男', '唱歌'),
+                ('kelly', 50, '女', '跳舞'),
+                ('jay', 40, '男', '游泳，下棋')
             ]
             cursor.executemany(sql, val)
+            conn.commit()
+
             print('-------插入数据成功-------')
             # 查询
-            sql = '''
-                select * from student where sex='男';
-            '''
-            rows = cursor.execute(sql)
+            sql = 'select * from student where sex="男";'
+            rows = cursor.fetchmany(sql)
             for row in rows:
                 print(row["name"])
             # 删除
-            sql = '''
-                delete from student where id=3;
-            '''
+            sql = 'delete from student where id=3;'
             cursor.execute(sql)
             print('-------删除成功-------')
             # 更新
-            sql = '''
-                update student set sex='男' where sex='女';
-            '''
+            sql = 'update student set sex="男" where sex="女";'
             cursor.execute(sql)
             print('-------更新成功-------')
         except Exception as ex:
+            conn.rollback()
             print(ex)
-
 
 operationDb()
