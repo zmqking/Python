@@ -3,7 +3,6 @@
 # Author:king
 # Date:2023/5/16
 
-
 import pymysql
 
 
@@ -27,7 +26,7 @@ def operationDb():
             cursor.execute(sql)
             print('-------创建成功-------')
             # 插入四条数据
-            sql = 'insert into student(name ,age,sex,hobbies) values(%s,%s,%s,%s);'
+            sql = 'insert into student(name,age,sex,hobbies) values(%s,%s,%s,%s);'
             val = [
                 ('king', 20, '男', '电影，新闻'),
                 ('andy', 60, '男', '唱歌'),
@@ -39,10 +38,11 @@ def operationDb():
 
             print('-------插入数据成功-------')
             # 查询
-            sql = 'select * from student where sex="男";'
-            rows = cursor.fetchmany(sql)
-            for row in rows:
-                print(row["name"])
+            sql = "select * from student where sex='男'"
+            cursor.execute(sql)
+            results = cursor.fetchall()
+            for row in results:
+                print(row)
             # 删除
             sql = 'delete from student where id=3;'
             cursor.execute(sql)
@@ -54,5 +54,6 @@ def operationDb():
         except Exception as ex:
             conn.rollback()
             print(ex)
+
 
 operationDb()
