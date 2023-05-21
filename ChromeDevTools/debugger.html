@@ -19,3 +19,13 @@
 </script>
 </body>
 </html>
+
+
+# 查询数据
+sql = "SELECT * FROM users WHERE age > %s"
+cursor.execute(sql, (18,))
+results = cursor.fetchall()
+
+# 输出查询结果
+for row in results:
+    print(row)
