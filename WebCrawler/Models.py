@@ -10,7 +10,9 @@ import asyncio
 import aiohttp
 import time
 from lxml import etree
-import logging
+# import logging
+from loguru import logger
+import os
 
 headers = {
     "authority": "www.pornpics.com",
@@ -48,13 +50,13 @@ proxies = {
 # 异步设置代理方式
 proxy = 'http://127.0.0.1:7890'
 
-logging.basicConfig(  # 针对 basicConfig 进行配置(basicConfig 其实就是对 logging 模块进行动态的调整，之后可以直接使用)
-    level=logging.INFO,  # INFO 等级以下的日志不会被记录
-    format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',  # 日志输出格式
-    filename='back.log',  # 日志存放路径(存放在当前相对路径)
-    filemode='w',  # 输入模式；如果当前我们文件已经存在，可以使用 'a' 模式替代 'w' 模式
-    # 与文件写入的模式相似，'w' 模式为没有文件时创建文件；'a' 模式为追加内容写入日志文件
-)
+# logging.basicConfig(  # 针对 basicConfig 进行配置(basicConfig 其实就是对 logging 模块进行动态的调整，之后可以直接使用)
+#     level=logging.INFO,  # INFO 等级以下的日志不会被记录
+#     format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',  # 日志输出格式
+#     filename='back.log',  # 日志存放路径(存放在当前相对路径)
+#     filemode='w',  # 输入模式；如果当前我们文件已经存在，可以使用 'a' 模式替代 'w' 模式
+#     # 与文件写入的模式相似，'w' 模式为没有文件时创建文件；'a' 模式为追加内容写入日志文件
+# )
 
 
 # region 同步下载
@@ -111,7 +113,9 @@ logging.basicConfig(  # 针对 basicConfig 进行配置(basicConfig 其实就是
 
 
 # region 异步下载
-async def getHtmlAsync(url=None, params=None):
+path = 'E:/chrome/New folder/'
+
+async def get_html_async(url=None, params=None):
     hrefs = []
     try:
         async with aiohttp.ClientSession() as client:
@@ -128,20 +132,18 @@ async def getHtmlAsync(url=None, params=None):
     return hrefs
 
 
-async def getImageAddressAsync(name):
+async def get_image_address_async(name):
     url = "https://www.pornpics.com/pornstars/" + name + "/"
     # params = {
     #     "q": name
     # }
     res = []
     try:
-        links = await getHtmlAsync(url)
+        links = await get_html_async(url)
         tasks = []
         if bool(links):
             for link in links:
-                # li = await getHtmlAsync(link)
-                # res.extend(li)
-                task = asyncio.create_task(getHtmlAsync(link))
+                task = asyncio.create_task(get_html_async(link))
                 tasks.append(task)
             result = await asyncio.gather(*tasks)  # 等待一起执行完毕
             return result
@@ -150,34 +152,37 @@ async def getImageAddressAsync(name):
     return res
 
 
-async def saveImagesAsync(name):
+async def save_images_async(name):
     # https://cdni.pornpics.com/1280/7/499/78624968/78624968_003_a3cb.jpg;
     try:
-        imgUrls = await getImageAddressAsync(name)
+        imgUrls = await get_image_address_async(name)
         if bool(imgUrls):
             tasks = []
             async with aiohttp.ClientSession() as client:
                 for i in range(len(imgUrls)):
-                    task = asyncio.create_task(SaveImgAsync(client, i, imgUrls))
+                    task = asyncio.create_task(save_img_async(client, i, imgUrls))
                     tasks.append(task)
-                await asyncio.gather(*tasks)
+                # await asyncio.gather(*tasks)
+                await asyncio.wait(tasks)
         else:
             print('无图片地址！')
     except Exception as ex:
         print('saveImagesAsync报错：', ex)
 
 
-async def SaveImgAsync(client, i, imgUrls):
+async def save_img_async(client, i, imgUrls):
+    if not os.path.exists(path):
+        os.mkdir(path)
     for imgUrl in imgUrls[i]:
         img = imgUrl[imgUrl.rindex('/') + 1:]
         response = await client.get(imgUrl, headers=headers, cookies=cookies, proxy=proxy)
         content = await response.read()
         if bool(content):
-            with open(f'F:/chrome/New folder/{img}', 'wb')as f:
+            with open(f'{path}{img}', 'wb')as f:
                 f.write(content)
                 print(img + ' 下载成功！')
         else:
-            logging.info('下载失败：' + imgUrl)
+            logger.info('下载失败：' + imgUrl)
 
 
 if __name__ == '__main__':
@@ -187,7 +192,7 @@ if __name__ == '__main__':
         str = str.replace(' ', '-')
         start = time.time()
         loop = asyncio.get_event_loop()
-        loop.run_until_complete(saveImagesAsync(str))
+        loop.run_until_complete(save_images_async(str))
 
         print('download done!', time.time() - start)
 
