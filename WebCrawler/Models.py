@@ -12,6 +12,8 @@ import time
 from lxml import etree
 # import logging
 from loguru import logger
+from retrying import retry
+
 import os
 
 headers = {
@@ -115,11 +117,12 @@ proxy = 'http://127.0.0.1:7890'
 # region 异步下载
 path = 'E:/chrome/New folder/'
 
+
 async def get_html_async(url=None, params=None):
     hrefs = []
     try:
         async with aiohttp.ClientSession() as client:
-            response = await client.get(url, headers=headers, cookies=cookies, params=params, proxy=proxy)
+            response = await client.get(url, headers=headers, cookies=cookies, params=params, proxy=proxy, timeout=3)
             text = await response.text()
             tree = etree.HTML(text)
             links = tree.xpath(xpath)
@@ -175,7 +178,7 @@ async def save_img_async(client, i, imgUrls):
         os.mkdir(path)
     for imgUrl in imgUrls[i]:
         img = imgUrl[imgUrl.rindex('/') + 1:]
-        response = await client.get(imgUrl, headers=headers, cookies=cookies, proxy=proxy)
+        response = await client.get(imgUrl, headers=headers, cookies=cookies, proxy=proxy, timeout=3)
         content = await response.read()
         if bool(content):
             with open(f'{path}{img}', 'wb')as f:
