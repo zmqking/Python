@@ -137,9 +137,6 @@ async def get_html_async(url=None, params=None):
 
 async def get_image_address_async(name):
     url = "https://www.pornpics.com/pornstars/" + name + "/"
-    # params = {
-    #     "q": name
-    # }
     res = []
     try:
         links = await get_html_async(url)
@@ -158,12 +155,12 @@ async def get_image_address_async(name):
 async def save_images_async(name):
     # https://cdni.pornpics.com/1280/7/499/78624968/78624968_003_a3cb.jpg;
     try:
-        imgUrls = await get_image_address_async(name)
-        if bool(imgUrls):
+        img_urls = await get_image_address_async(name)
+        if bool(img_urls):
             tasks = []
             async with aiohttp.ClientSession() as client:
-                for i in range(len(imgUrls)):
-                    task = asyncio.create_task(save_img_async(client, i, imgUrls))
+                for i in range(len(img_urls)):
+                    task = asyncio.create_task(save_img_async(client, i, img_urls))
                     tasks.append(task)
                 # await asyncio.gather(*tasks)
                 await asyncio.wait(tasks)
@@ -176,16 +173,16 @@ async def save_images_async(name):
 async def save_img_async(client, i, imgUrls):
     if not os.path.exists(path):
         os.mkdir(path)
-    for imgUrl in imgUrls[i]:
-        img = imgUrl[imgUrl.rindex('/') + 1:]
-        response = await client.get(imgUrl, headers=headers, cookies=cookies, proxy=proxy, timeout=3)
+    for img_url in imgUrls[i]:
+        img = img_url[img_url.rindex('/') + 1:]
+        response = await client.get(img_url, headers=headers, cookies=cookies, proxy=proxy, timeout=3)
         content = await response.read()
         if bool(content):
             with open(f'{path}{img}', 'wb')as f:
                 f.write(content)
                 print(img + ' 下载成功！')
         else:
-            logger.info('下载失败：' + imgUrl)
+            logger.info('下载失败：' + img_url)
 
 
 if __name__ == '__main__':
