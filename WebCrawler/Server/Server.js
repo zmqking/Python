@@ -5,7 +5,7 @@ const express = require('express')
 const app = express();
 
 function enc_pwd(val){
-    res = btoa(val)
+    let res = btoa(val)
     return res
 }
 
@@ -15,7 +15,7 @@ app.listen(8080, () => {
 })
 
 app.get('/user', (req, res) => {
-    pwd = req.query.name
-    re = enc_pwd(pwd)
+    let pwd = req.query.name
+    let re = enc_pwd(pwd)
     res.send(re)
 })

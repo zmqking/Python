@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>css练习</title>
+    <style type="text/css">
+        table{
+            width: 200px;
+            height: 200px;
+        }
+        tr:nth-child(odd){
+            background-color: beige;
+        }
+        tr td:nth-child(3){
+            color: red;
+        }
+        tr:first-child td:first-child {
+            font-size: 30px;
+        }
+        tr:last-child td:last-child{
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<!--做一个表格，6行4列
+实现隔行换色（背景色）
+并且第3列文字红色
+第一个单元格文字大小30px。
+最后一个单元格文字加粗
+ -->
+
+<table border="2" cellspacing='0'>
+    <tr>
+        <td>sds</td>
+        <td>s</td>
+        <td>dd</td>
+        <td>sds</td>
+    </tr>
+    <tr>
+        <td>cd</td>
+        <td>sc</td>
+        <td>adc</td>
+        <td>sa</td>
+    </tr>
+    <tr>
+        <td>dcd</td>
+        <td>sdas</td>
+        <td>sdds</td>
+        <td>d</td>
+    </tr>
+    <tr>
+        <td>dsd</td>
+        <td>asdsa</td>
+        <td>ddsv</td>
+        <td>sd</td>
+    </tr>
+    <tr>
+        <td>ssa</td>
+        <td>sd</td>
+        <td>sad</td>
+        <td>vds</td>
+    </tr>
+    <tr>
+        <td>sad</td>
+        <td>ssa</td>
+        <td>d</td>
+        <td>sdsa</td>
+    </tr>
+</table>
+</body>
+</html>
