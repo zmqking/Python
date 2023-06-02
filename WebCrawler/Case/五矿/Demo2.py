@@ -1,12 +1,9 @@
-# -*- coding: UTF-8 -*-
-# Project -> File:Python -> Demo2 
-# Author:king
-# Date:2023/6/1
-
+# -*- coding: utf-8 -*-
+# @Author   : HeLaoshi
+# @File     : demo2.py
+# @Project  : PythonReversePath
 import requests
 import execjs
-
-# import pyexecjs2
 
 
 # cookie加密  加速乐  gov
@@ -33,10 +30,8 @@ headers = {
 }
 rkey = requests.post('https://ec.minmetals.com.cn/open/homepage/public', cookies=cookies, headers=headers).text
 
+
 param = execjs.compile(open('./demo2.js', 'r', encoding='utf8').read()).call('main123', rkey, 3)
-json = open('./Demo2.js', 'r', encoding='utf8').read()
-# json = json.replace('\xa0','')
-# param = execjs.compile(json).call('main123')
 # print(param)
 # 第一个问题: 分页操作采集采集 请求体是加密的
 # 业务: 逆向  1. 找到对应的加密方法   2. 明文数据是什么样的

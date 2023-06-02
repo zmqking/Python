@@ -3363,7 +3363,6 @@ function m(A, e, t) {
         A
 }
 
-
 function d(A, e) {
     var t = Object.keys(A);
     if (Object.getOwnPropertySymbols) {
@@ -3434,15 +3433,12 @@ v["a"].prototype.encryptLong = function (A) {
     }
 }
 t = new v["a"]
-var rkey1='MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDpeHx3iP1WUeWTKJSGAGPLX1PtnnFjEYoli5amWIPKZaJQAVt5qnKSKod9bZu+MPrAvjlyCr47jAs1bfwmHO4+mFIE8MnwU1fbR6RTNsv0ud4eiGD+LC1z+qqEWeq7nf1+Swk0tPslKdk93RwxhGlaxYEVebBORV/+I1bohG4x8QIDAQAB';
-var page=2;
+
 function main123(rkey, page) {
-// function main123() {
     // 先拿一组固定的值进行测试
     // rkey = 'MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCveMxSclIHja0906oHX+lyhB60LGCWatxfpwKnbjDPjE86WBDCXKXqcR9EePa4UkRQZFWkuIu7epbYJWDSTto7cB7TXbIG3+HeLZxa61gbFMzoXe5zcW4lQHCoB5rb249WiUyD5uypgM/EDDNVBMharimves7KPjRnqBRWXTBzewIDAQAB'
     // 添加公钥
     t.setPublicKey(rkey)
-    // t.setPublicKey(rkey)
     e = {
         "inviteMethod": "",
         "businessClassfication": "",
@@ -3459,5 +3455,3 @@ function main123(rkey, page) {
     s = t.encryptLong(JSON.stringify(a)) // 返回需要的param (密文参数)
     return s
 }
-
-console.log(main123());

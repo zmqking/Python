@@ -1,4 +1,5 @@
-var cypt = require('crypto-js');
+// var cypt = require('crypto-js');
+var crypto = require('crypto');
 window = global;
 // var rkey='MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDpeHx3iP1WUeWTKJSGAGPLX1PtnnFjEYoli5amWIPKZaJQAVt5qnKSKod9bZu+MPrAvjlyCr47jAs1bfwmHO4+mFIE8MnwU1fbR6RTNsv0ud4eiGD+LC1z+qqEWeq7nf1+Swk0tPslKdk93RwxhGlaxYEVebBORV/+I1bohG4x8QIDAQAB';
 var wp;
@@ -3151,7 +3152,6 @@ version: 2.9.0
     },
 })
 
-
 //region method
 
 function m(A, e, t) {
@@ -3189,6 +3189,11 @@ function b(A) {
         ))
     }
     return A
+}
+
+function md5Encrypt(text) {
+    const hash = crypto.createHash('md5').update(text).digest('hex');
+    return hash
 }
 
 function w(A) {
@@ -3231,9 +3236,9 @@ v["a"].prototype.encryptLong = function (A) {
     }
 }
 t = new v["a"];
-var rkey1='MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDpeHx3iP1WUeWTKJSGAGPLX1PtnnFjEYoli5amWIPKZaJQAVt5qnKSKod9bZu+MPrAvjlyCr47jAs1bfwmHO4+mFIE8MnwU1fbR6RTNsv0ud4eiGD+LC1z+qqEWeq7nf1+Swk0tPslKdk93RwxhGlaxYEVebBORV/+I1bohG4x8QIDAQAB';
+// var rkey1='MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDpeHx3iP1WUeWTKJSGAGPLX1PtnnFjEYoli5amWIPKZaJQAVt5qnKSKod9bZu+MPrAvjlyCr47jAs1bfwmHO4+mFIE8MnwU1fbR6RTNsv0ud4eiGD+LC1z+qqEWeq7nf1+Swk0tPslKdk93RwxhGlaxYEVebBORV/+I1bohG4x8QIDAQAB';
 function getCypt(rkey, page) {
-    t.setPublicKey(rkey1);
+    t.setPublicKey(rkey);
     e = {
         "inviteMethod": "",
         "businessClassfication": "",
@@ -3243,7 +3248,7 @@ function getCypt(rkey, page) {
         "pageIndex": page
     }
     a = b(b({}, e), {}, {
-        sign: cypt.MD5(JSON.stringify(e)).toString(),
+        sign: md5Encrypt(JSON.stringify(e)),
         timeStamp: +new Date
     });
 
@@ -3251,4 +3256,4 @@ function getCypt(rkey, page) {
     return s
 }
 
-console.log(getCypt());
+// console.log(getCypt());
