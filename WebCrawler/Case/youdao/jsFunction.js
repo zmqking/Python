@@ -1,4 +1,3 @@
-const cypt = require('crypto')
 const wp = require('./webpackage')
 
 var form = {};
