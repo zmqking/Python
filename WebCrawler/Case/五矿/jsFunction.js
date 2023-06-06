@@ -1,11 +1,10 @@
-var cypt = require('crypto-js');
+// var cypt = require('crypto-js');
+var crypto = require('crypto');
 window = global;
-
-var r = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDpeHx3iP1WUeWTKJSGAGPLX1PtnnFjEYoli5amWIPKZaJQAVt5qnKSKod9bZu+MPrAvjlyCr47jAs1bfwmHO4+mFIE8MnwU1fbR6RTNsv0ud4eiGD+LC1z+qqEWeq7nf1+Swk0tPslKdk93RwxhGlaxYEVebBORV/+I1bohG4x8QIDAQAB";
-
+// var rkey='MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDpeHx3iP1WUeWTKJSGAGPLX1PtnnFjEYoli5amWIPKZaJQAVt5qnKSKod9bZu+MPrAvjlyCr47jAs1bfwmHO4+mFIE8MnwU1fbR6RTNsv0ud4eiGD+LC1z+qqEWeq7nf1+Swk0tPslKdk93RwxhGlaxYEVebBORV/+I1bohG4x8QIDAQAB';
 var wp;
 (function (A) {
-      var n = {}
+    var n = {}
         , r = {
         index: 0
     }
@@ -32,7 +31,7 @@ var wp;
             t.exports
     }
 
-        wp = g
+    wp = g
 })({
     9816: function (e, t, n) {
         "use strict";
@@ -3152,17 +3151,50 @@ version: 2.9.0
         e.exports = JSON.parse('{"version":"3.2.1"}')
     },
 })
-var e =
-    {
-        "inviteMethod": "",
-        "businessClassfication": "",
-        "mc": "",
-        "lx": "ZBGG",
-        "dwmc": "",
-        "pageIndex": 2
-    }
 
-v = wp('9816');
+//region method
+
+function m(A, e, t) {
+    return e in A ? Object.defineProperty(A, e, {
+        value: t,
+        enumerable: !0,
+        configurable: !0,
+        writable: !0
+    }) : A[e] = t,
+        A
+}
+
+function d(A, e) {
+    var t = Object.keys(A);
+    if (Object.getOwnPropertySymbols) {
+        var n = Object.getOwnPropertySymbols(A);
+        e && (n = n.filter((function (e) {
+                return Object.getOwnPropertyDescriptor(A, e).enumerable
+            }
+        ))),
+            t.push.apply(t, n)
+    }
+    return t
+}
+
+function b(A) {
+    for (var e = 1; e < arguments.length; e++) {
+        var t = null != arguments[e] ? arguments[e] : {};
+        e % 2 ? d(Object(t), !0).forEach((function (e) {
+                m(A, e, t[e])
+            }
+        )) : Object.getOwnPropertyDescriptors ? Object.defineProperties(A, Object.getOwnPropertyDescriptors(t)) : d(Object(t)).forEach((function (e) {
+                Object.defineProperty(A, e, Object.getOwnPropertyDescriptor(t, e))
+            }
+        ))
+    }
+    return A
+}
+
+function md5Encrypt(text) {
+    const hash = crypto.createHash('md5').update(text).digest('hex');
+    return hash
+}
 
 function w(A) {
     var e, t, n = "", r = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/", a = "=";
@@ -3177,6 +3209,9 @@ function w(A) {
     return n
 }
 
+//endregion
+
+v = wp(9816);
 v["a"].prototype.encryptLong = function (A) {
     var e = this.getKey()
         , t = (e.n.bitLength() + 7 >> 3) - 11;
@@ -3194,22 +3229,31 @@ v["a"].prototype.encryptLong = function (A) {
                 w(r);
         var a = e.encrypt(A)
             , s = w(a);
-            // , s = Buffer.from(a).toString('base64');
+        // , s = Buffer.from(a).toString('base64');
         return s
     } catch (i) {
         return i
     }
 }
+t = new v["a"];
+// var rkey1='MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDpeHx3iP1WUeWTKJSGAGPLX1PtnnFjEYoli5amWIPKZaJQAVt5qnKSKod9bZu+MPrAvjlyCr47jAs1bfwmHO4+mFIE8MnwU1fbR6RTNsv0ud4eiGD+LC1z+qqEWeq7nf1+Swk0tPslKdk93RwxhGlaxYEVebBORV/+I1bohG4x8QIDAQAB';
+function getCypt(rkey, page) {
+    t.setPublicKey(rkey);
+    e = {
+        "inviteMethod": "",
+        "businessClassfication": "",
+        "mc": "",
+        "lx": "ZBGG",
+        "dwmc": "",
+        "pageIndex": page
+    }
+    a = b(b({}, e), {}, {
+        sign: md5Encrypt(JSON.stringify(e)),
+        timeStamp: +new Date
+    });
 
-
-function getCypt() {
-    t = new v["a"];
-    t.setPublicKey(r);
-    e["sign"] = cypt.MD5(JSON.stringify(e)).toString();
-    e["timeStamp"] = +new Date;
-
-    s = t.encryptLong(JSON.stringify(e));
+    s = t.encryptLong(JSON.stringify(a));
     return s
 }
 
-console.log(getCypt());
+// console.log(getCypt());

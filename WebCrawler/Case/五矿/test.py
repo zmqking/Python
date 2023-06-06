@@ -1,13 +1,8 @@
-# -*- coding: utf-8 -*-
-"""
-@File    : GetBiddings.py
-@Time    : 5/31/2023 9:34 PM
-@Author  : king
-@Desc    : 
-"""
+# -*- coding: UTF-8 -*-
+# Project -> File:Python -> test 
+# Author:king
+# Date:2023/6/1
 import requests
-import execjs
-import json
 
 cookies = {
     '__jsluid_s': '4236d6684d0aa7a41c58c41d02d7a117',
@@ -34,18 +29,9 @@ headers = {
     'sec-ch-ua-platform': '"Windows"',
 }
 
-response = requests.post(
-    'https://ec.minmetals.com.cn/open/homepage/public',
-    cookies=cookies,
-    headers=headers
-)
-rkey = response.text
-json_data = {}
-jsText = ''
-with open('./jsFunction.js', 'r', encoding='utf8')as f:
-    jsText = f.read()
-cypt = execjs.compile(jsText).call('getCypt', rkey, 1)
-json_data['param'] = cypt
+json_data = {
+    'param': 'RcDNEI+6+xtnQ2gwWtqe651/C5jPTH+Jc+EHyzV6CPp80vqS/BJxoA5f+kBPpWvL5P0ufRequAzs77Viad6aJbY3dMdv1dO4fErbzQB7m/1jCJtb9T4UwEqRS2Owxs7pS3U1xhgGE8/WRIzUzIiEUXn6Ij/6MpzQYcJoONs+u4ZAlQCEY7EMemW6iQKnQf1NuKkmWrj6EPWCU9Dvbd6O+uDDwloEUki6pKJIwk24lniojjQzVAbyIvWOVfCh+17Rc2VL8300t6txoD0cb+WpAvIWrM7N+zjOFLbWMVpyciN8SL+9TLJRZaa30IAkUIbAyWJX4jUqKueLVIKizPQQvDnSqv0e5tpJ3TMyknWlf5l2hNpqRHJ9DYOdWjUPq+jdT0U4L6+JFM5z4DBFNfkNCM/9vv3IEk6OWMBcTuZsqJco3EyCEQMV0qNIbHC8+y/hc6XcNN5hqvyoB6uC6BLCRAQKO/Zqk5W7VrGz75Y8ozoNmQqgQfqAq2qU0/V3FYBsEkncd01Gh+7yNGHeh0Au9eEGALvPkUmTg4OoYgBYwApSEUdh2SO1vzmVoGDi8Vbje4p6xekCBc0tueiMcYVmx54+YiRGR17ice41oJKt5KV4f7ZQ2oDUvWSJeSgR6MrGikfPLxNFMdFToXGOLzmN+vj+Z3K1BNeDuB94hwogRmk=',
+}
 
 response = requests.post(
     'https://ec.minmetals.com.cn/open/homepage/zbs/by-lx-page',
@@ -53,5 +39,4 @@ response = requests.post(
     headers=headers,
     json=json_data,
 )
-
 print(response.text)
