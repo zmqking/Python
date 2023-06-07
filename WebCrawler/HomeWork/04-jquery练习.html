@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>jquery练习</title>
+    <script src="./jquery-3.1.1.min.js"></script>
+    <script type="text/javascript">
+        var _url = "https://image.baidu.com/search/acjson?tn=resultjson_com&logid=7217367652009448130&ipn=rj&ct=201326592&is=&fp=result&fr=ala&word=%E5%9B%BE%E7%89%87&queryWord=%E5%9B%BE%E7%89%87&cl=2&lm=-1&ie=utf-8&oe=utf-8&adpicid=&st=&z=&ic=&hd=&latest=&copyright=&s=&se=&tab=&width=&height=&face=&istype=&qc=&nc=&expermode=&nojc=&isAsync=&pn=210&rn=30&gsm=d2&1685454799580=";
+        $(function () {
+            $.get({
+                dataType: 'json', // 数据类型
+                url: _url,
+                success: function (data) {
+                    if (data.data.length > 0) {
+                        let imgs = '';
+                        for (let item in data) {
+                            imgs += "<img src='" + data[item].thumbURL + "'/>";
+                        }
+                        $('#divImg').html(imgs);
+                    }
+                }, error: function (e) {
+                    console.log(e);
+                }
+            });
+        });
+
+    </script>
+</head>
+<body>
+     <div id="divImg"></div>
+</body>
+</html>

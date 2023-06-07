@@ -1,4 +1,4 @@
-// const cypt = require('crypto-js')
+const test = require('./webPack')
 const cypt = require('crypto')
 
 var form = {};
@@ -266,7 +266,278 @@ var response = "Z21kD9ZK1ke6ugku2ccWuz4Ip5f4PLCoxWstZf_6UUyBoy8dpWc3NOXFRrnPMya7
             wp = s
     }
 )({
+"5c6c": function(t, e) {
+        t.exports = function(t, e) {
+            return {
+                enumerable: !(1 & t),
+                configurable: !(2 & t),
+                writable: !(4 & t),
+                value: e
+            }
+        }
+    },
+d1e7: function(t, e, n) {
+        "use strict";
+        var r = {}.propertyIsEnumerable
+          , i = Object.getOwnPropertyDescriptor
+          , o = i && !r.call({
+            1: 2
+        }, 1);
+        e.f = o ? function(t) {
+            var e = i(this, t);
+            return !!e && e.enumerable
+        }
+        : r
+    },
+    "40d5": function(t, e, n) {
+        var r = n("d039");
+        t.exports = !r((function() {
+            var t = function() {}
+            .bind();
+            return "function" != typeof t || t.hasOwnProperty("prototype")
+        }
+        ))
+    },
+    c65b: function(t, e, n) {
+        var r = n("40d5")
+          , i = Function.prototype.call;
+        t.exports = r ? i.bind(i) : function() {
+            return i.apply(i, arguments)
+        }
+    },
+    d039: function(t, e) {
+        t.exports = function(t) {
+            try {
+                return !!t()
+            } catch (e) {
+                return !0
+            }
+        }
+    },
+    "83ab": function(t, e, n) {
+        var r = n("d039");
+        t.exports = !r((function() {
+            return 7 != Object.defineProperty({}, 1, {
+                get: function() {
+                    return 7
+                }
+            })[1]
+        }
+        ))
+    },
+    "06cf": function(t, e, n) {
+        var r = n("83ab")
+          , i = n("c65b")
+          , o = n("d1e7")
+          , s = n("5c6c")
+          , a = n("fc6a")
+          , u = n("a04b")
+          , h = n("1a2d")
+          , f = n("0cfb")
+          , c = Object.getOwnPropertyDescriptor;
+        e.f = r ? c : function(t, e) {
+            if (t = a(t),
+            e = u(e),
+            f)
+                try {
+                    return c(t, e)
+                } catch (n) {}
+            if (h(t, e))
+                return s(!i(o.f, t, e), t[e])
+        }
+    },
+    c8ba: function(t, e) {
+        var n;
+        n = function() {
+            return this
+        }();
+        try {
+            n = n || new Function("return this")()
+        } catch (r) {
+            "object" === typeof window && (n = window)
+        }
+        t.exports = n
+    },
+    da84: function(t, e, n) {
+        (function(e) {
+            var n = function(t) {
+                return t && t.Math == Math && t
+            };
+            t.exports = n("object" == typeof globalThis && globalThis) || n("object" == typeof window && window) || n("object" == typeof self && self) || n("object" == typeof e && e) || function() {
+                return this
+            }() || Function("return this")()
+        }
+        ).call(this, n("c8ba"))
+    },
+     "23e7": function(t, e, n) {
+        var r = n("da84")
+          , i = n("06cf").f
+          , o = n("9112")
+          , s = n("cb2d")
+          , a = n("6374")
+          , u = n("e893")
+          , h = n("94ca");
+        t.exports = function(t, e) {
+            var n, f, c, l, d, p, m = t.target, b = t.global, g = t.stat;
+            if (f = b ? r : g ? r[m] || a(m, {}) : (r[m] || {}).prototype,
+            f)
+                for (c in e) {
+                    if (d = e[c],
+                    t.dontCallGetSet ? (p = i(f, c),
+                    l = p && p.value) : l = f[c],
+                    n = h(b ? c : m + (g ? "." : "#") + c, t.forced),
+                    !n && void 0 !== l) {
+                        if (typeof d == typeof l)
+                            continue;
+                        u(d, l)
+                    }
+                    (t.sham || l && l.sham) && o(d, "sham", !0),
+                    s(f, c, d, t)
+                }
+        }
+    },
+    5530: function (t, e, n) {
+        "use strict";
+        n.d(e, "a", (function () {
+                return o
+            }
+        ));
+        n("14d9");
 
+        function r(t, e, n) {
+            return e in t ? Object.defineProperty(t, e, {
+                value: n,
+                enumerable: !0,
+                configurable: !0,
+                writable: !0
+            }) : t[e] = n,
+                t
+        }
+
+        function i(t, e) {
+            var n = Object.keys(t);
+            if (Object.getOwnPropertySymbols) {
+                var r = Object.getOwnPropertySymbols(t);
+                e && (r = r.filter((function (e) {
+                        return Object.getOwnPropertyDescriptor(t, e).enumerable
+                    }
+                ))),
+                    n.push.apply(n, r)
+            }
+            return n
+        }
+
+        function o(t) {
+            for (var e = 1; e < arguments.length; e++) {
+                var n = null != arguments[e] ? arguments[e] : {};
+                e % 2 ? i(Object(n), !0).forEach((function (e) {
+                        r(t, e, n[e])
+                    }
+                )) : Object.getOwnPropertyDescriptors ? Object.defineProperties(t, Object.getOwnPropertyDescriptors(n)) : i(Object(n)).forEach((function (e) {
+                        Object.defineProperty(t, e, Object.getOwnPropertyDescriptor(n, e))
+                    }
+                ))
+            }
+            return t
+        }
+    },
+    8139: function (e, t, o) {
+        "use strict";
+        (function (e) {
+                var n = o("5530")
+                    , a = o("5724")
+                    , c = o("1c46")
+                    , r = o.n(c)
+                    , i = o("bc3a");
+                const {CancelToken: s} = i["a"];
+                let l;
+                const d = "fanyideskweb"
+                    , u = "webfanyi"
+                    , m = "client,mysticTime,product"
+                    , p = "1.0.0"
+                    , b = "web"
+                    , f = "fanyi.web";
+
+                function v(e) {
+                    return r.a.createHash("md5").update(e).digest()
+                }
+
+                function g(e) {
+                    return r.a.createHash("md5").update(e.toString()).digest("hex")
+                }
+
+                function h(e, t) {
+                    return g(`client=${d}&mysticTime=${e}&product=${u}&key=${t}`)
+                }
+
+                function O(e) {
+                    const t = (new Date).getTime();
+                    return {
+                        sign: h(t, e),
+                        client: d,
+                        product: u,
+                        appVersion: p,
+                        vendor: b,
+                        pointParam: m,
+                        mysticTime: t,
+                        keyfrom: f
+                    }
+                }
+
+                const j = (e, t) => Object(a["a"])("https://dict.youdao.com/webtranslate/key", Object(n["a"])(Object(n["a"])({}, e), O(t)))
+                    ,
+                    y = (e, t) => Object(a["d"])("https://dict.youdao.com/webtranslate", Object(n["a"])(Object(n["a"])({}, e), O(t)), {
+                        headers: {
+                            "Content-Type": "application/x-www-form-urlencoded"
+                        }
+                    })
+                    , w = () => {
+                        l && l()
+                    }
+                    , A = e => Object(a["c"])("https://dict.youdao.com/keyword/key", e)
+                    ,
+                    k = (e, t) => Object(a["a"])(" https://dict-subsidiary.youdao.com/aigc/entrance", Object(n["a"])(Object(n["a"])({}, e), O(t)))
+                    ,
+                    E = (e, t) => Object(a["a"])(" https://dict-subsidiary.youdao.com/aigc/style", Object(n["a"])(Object(n["a"])({}, e), O(t)))
+                    ,
+                    _ = (e, t) => Object(a["a"])(" https://dict-subsidiary.youdao.com/aigc/tran", Object(n["a"])(Object(n["a"])({}, e), O(t)), {
+                        cancelToken: new s(e => {
+                                l = e
+                            }
+                        )
+                    })
+                    , C = e => Object(a["c"])("https://fanyi.youdao.com/feedback", e)
+                    , T = (t, o, n) => {
+                        if (!t)
+                            return null;
+                        const a = e.alloc(16, v(o))
+                            , c = e.alloc(16, v(n))
+                            , i = r.a.createDecipheriv("aes-128-cbc", a, c);
+                        let s = i.update(t, "base64", "utf-8");
+                        return s += i.final("utf-8"),
+                            s
+                    }
+                    , S = "https://lunafeedback.youdao.com/feedback"
+                    , N = e => {
+                        const t = "product=deskdict_contentCorrection&client=fanyiweb&appVersion=1.0.0&comments=" + e;
+                        return Object(a["b"])(S + "/add", t)
+                    }
+                ;
+                t["a"] = {
+                    getTextTranslateSecretKey: j,
+                    getTextTranslateResult: y,
+                    getTextTranslateKeyword: A,
+                    decodeData: T,
+                    feedback: N,
+                    getAigcEntrance: k,
+                    getAigcStyle: E,
+                    getAigcTran: _,
+                    fanyiFeedback: C,
+                    cancelLastGpt: w
+                }
+            }
+        ).call(this, o("b639").Buffer)
+    },
     "14d9": function (t, e, n) {
         "use strict";
         var r = n("23e7")
@@ -3127,21 +3398,7 @@ var response = "Z21kD9ZK1ke6ugku2ccWuz4Ip5f4PLCoxWstZf_6UUyBoy8dpWc3NOXFRrnPMya7
 });
 //endregion
 
-
-var nn = function o(t) {
-    for (var e = 1; e < arguments.length; e++) {
-        var n = null != arguments[e] ? arguments[e] : {};
-        e % 2 ? i(Object(n), !0).forEach((function (e) {
-                r(t, e, n[e])
-            }
-        )) : Object.getOwnPropertyDescriptors ? Object.defineProperties(t, Object.getOwnPropertyDescriptors(n)) : i(Object(n)).forEach((function (e) {
-                Object.defineProperty(t, e, Object.getOwnPropertyDescriptor(n, e))
-            }
-        ))
-    }
-    return t
-}
-
+// var nn = wp("5530");
 // var an = (wp("14d9"),
 //     wp("8139"));
 form.data = {
@@ -3203,9 +3460,9 @@ var h = {
     alloc: function (t, e, n) {
         return this.l(null, t, e, n)
     },
-    l:function(t, e, n, r) {
-    return c(e),
-        e <= 0 ? u(t, e) : void 0 !== n ? "string" === typeof r ? u(t, e).fill(n, r) : u(t, e).fill(n) : u(t, e)
+    l: function (t, e, n, r) {
+        return c(e),
+            e <= 0 ? u(t, e) : void 0 !== n ? "string" === typeof r ? u(t, e).fill(n, r) : u(t, e).fill(n) : u(t, e)
     }
 }
 
@@ -3237,7 +3494,7 @@ var decodeData = (t, o, n) => {
 function c(t, e, n) {
     // if (t = t.toLowerCase(),
     //     o[t])
-        return cypt.createDecipheriv(t, e, n);
+    return cypt.createDecipheriv(t, e, n);
     if (s[t])
         return new r({
             key: e,
@@ -3248,17 +3505,19 @@ function c(t, e, n) {
     throw new TypeError("invalid suite type")
 }
 
-// function getTextTranslateResult(Object(nn["a"])(Object(nn["a"])({
-//     i: form.data.keyword,
-//     from: form.data.from,
-//     to: form.data.to
+// an["a"].getTextTranslateResult(Object(nn["a"])(Object(nn["a"])({
+//     i: e.data.keyword,
+//     from: e.data.from,
+//     to: e.data.to
 // }, n), {}, {
 //     dictResult: !0,
 //     keyid: "webfanyi"
 // }), o).then(o => {
-// an["a"].cancelLastGpt();
-const n = decodeData(response, decodeKey, decodeIv);
-//     , a = n ? JSON.parse(n) : {};
+//         an["a"].cancelLastGpt();
+        // o 用response临时替代
+        const n = decodeData(response, decodeKey, decodeIv)
+        let res = JSON.parse(n);
+console.log(res);
 // 0 === a.code ? e.success && t(e.success)(a) : e.fail && t(e.fail)(a)
 //     }
 // ).catch(o => {
