@@ -20,9 +20,10 @@ function encryptApiKey() {
 
 function comb(t, e) {
     var n = "".concat(t, "|").concat(e);
-    const buff = Buffer.from(n);
-    const base64 = buff.toString('base64');
-    return base64;
+    return btoa(n);
+    // const buff = Buffer.from(n);
+    // const base64 = buff.toString('base64');
+    // return base64;
 }
 
 function getApiKey() {
