@@ -5,13 +5,15 @@
 @Author  : king
 @Desc    : 
 """
-import execjs
+# import execjs
 
-print(execjs.eval('Date.now()'))
+# print(execjs.eval('Date.now()'))
 
 arrayA = [1, 3, 87, 28, 90]
 arrayB = [1, 96, 87, 8, 90]
 
+def getTextToC():
+    return 'from python';
 
 def findSameOrDiff():
     diff = []
