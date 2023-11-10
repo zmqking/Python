@@ -5,13 +5,9 @@
 
 import time
 # 打开文本文档给人编辑
-import subprocess
 from selenium import webdriver
-from selenium.common import NoSuchElementException
 from selenium.webdriver.common.by import By
 from PIL import Image
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
@@ -165,14 +161,7 @@ def chapter_list():
         if td.text != '' and elemA.get_attribute('class') != 'WLinkW':  # 未完成
             print(elemA.text)
             elemA.click()
-            # time.sleep(1)
             curriculum_play()
-            # print('%s播放完成'%elemA.text)
-            # 获取所有窗口句柄
-            # window_handles = driver.window_handles
-            # print('windows句柄数%d' % len(window_handles))
-            # # 切换到第二个页面（假设第二个页面的句柄是window_handles[1]）
-            # driver.switch_to.window(window_handles[1])
 
 
 def curriculum_play():
@@ -187,7 +176,6 @@ def curriculum_play():
         time.sleep(2)
         play_m = driver.find_element(By.TAG_NAME, 'video')
         video_src = play_m.get_attribute('src')
-    # driver.execute_script("return arguments[0].play();", play_m)
     play_m.click()
     # 获取视频当前播放进度（以秒为单位）
 
@@ -217,26 +205,19 @@ def curriculum_play():
             play_m.click()
             current_time, total_duration = retry_get_time(current_time, play_m, total_duration)
 
-    # total_time = float(total_duration) - float(current_time)
     total_time = float(total_duration)
-    # play_time = time.time()
-    # current_play_time = 0
     print('%s 开始播放视频'%get_time())
     print('%s 播放中...' % get_time())
-    # wait = WebDriverWait(driver,total_time)
-    # wait.until(EC.property_to_be_true((By.ID, "my-player_html5_api"), "ended"))
     while float(current_time) < total_time:
         is_paused = driver.execute_script("return arguments[0].paused;", play_m)  # 判断视频是否被暂停
         while is_paused:
             print('%s 视频被暂停'%get_time())
             play_m.click()
-            # driver.execute_script("return arguments[0].play();", play_m)
             is_paused = driver.execute_script("return arguments[0].paused;", play_m)  # 判断视频是否被暂停
             print('%s 视频播放中...'%get_time())
 
         time.sleep(1)
         current_time = play_m.get_attribute('currentTime')
-        # current_play_time = time.time() - play_time
     driver.close()
     print('%s 看完关闭当前页'%get_time())
     driver.switch_to.window(driver.window_handles[1])
