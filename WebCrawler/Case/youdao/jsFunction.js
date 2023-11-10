@@ -3,27 +3,103 @@ const wp = require('./webpackage')
 var form = {};
 window = global;
 
-var decodeKey = "ydsecret://query/key/B*RGygVywfNBwpmBaZg*WT7SIOUP2T0C9WHMZN39j^DAdaZhAnxvGcCY6VYFwnHl";
 
-var decodeIv = "ydsecret://query/iv/C@lZe2YzHtZ2CYgaXKSVfsb7Y4QWHjITPPZ0nQp87fBeJ!Iv6v^6fvi2WN@bYpJ4";
-var response = "Z21kD9ZK1ke6ugku2ccWuz4Ip5f4PLCoxWstZf_6UUyBoy8dpWc3NOXFRrnPMya7F8nc56bSQNVHrCArXF5FAxvKKNagF5FS49bFhGReRyRSOgvapSYbsNVf3UOmbZJc7cY5chOeiok97F1OXVUeK7Ykt1EZ9LtfPTa56HEPrUGMlFL-A87URx6rHb1fEdcDzEo0E7itxVmSwgV3gpF9ftz9FBZO6fU-DLdEvQ_ceNJ3jXzqgt6xx7EAZ49sl_v3ZXHJxrCL2pG8Z93vd5gOo3ymG3habQxgs2P-rvRgiHC0GJm-yPuDxDuc6n4GHL70_k0OAWNewDl4_CFMsAHBMzh3lgflN3gP18TCyirDZVjEY4wNCfT1BJklEJ3jMSpjTZbxzzA1XG27yI1VFcsWt1C5HqhEOqWXTIqAnUR1mrR9d6EjrHxCQjPUmKcH9aG3JfDo3Sn6SLbr1GKFtQ8wM9YUMMfhwyjfyep1xwM9DRBZK-8JnQ2NchZnso5O-f_qdqtjCW5glPJSpkcwS9nCV_0DwJ29T48q_lGcdoxohFG6LWGvQvrSEBhU44W9B7toCF89gMu3Y_MilwSqVieIMXp_KrhE9iHGcXZJN9L7sUw=";
+// c = wp("1c46")
+// r = wp.n(c)
+var a=[
+    "0",
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K",
+    "L",
+    "M",
+    "N",
+    "O",
+    "P",
+    "Q",
+    "R",
+    "S",
+    "T",
+    "U",
+    "V",
+    "W",
+    "X",
+    "Y",
+    "Z",
+    "a",
+    "b",
+    "c",
+    "d",
+    "e",
+    "f",
+    "g",
+    "h",
+    "i",
+    "j",
+    "k",
+    "l",
+    "m",
+    "n",
+    "o",
+    "p",
+    "q",
+    "r",
+    "s",
+    "t",
+    "u",
+    "v",
+    "w",
+    "x",
+    "y",
+    "z"
+]
+var o=[];
+function H() {
+            // var e, n, t = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : 32, r = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : 16, a = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".split(""), o = [];
+            let t = 32;
+            let r = 16;
+            if (r = r || a.length,
+            t)
+                for (e = 0; e < t; e++)
+                    o[e] = a[0 | Math.random() * r];
+            else
+                for (o[8] = o[13] = o[18] = o[23] = "-",
+                o[14] = "4",
+                e = 0; e < 36; e++)
+                    o[e] || (n = 0 | 16 * Math.random(),
+                    o[e] = a[19 === e ? 3 & n | 8 : n]);
+            return o.join("")
+        }
 
-c = wp("1c46")
-r = wp.n(c)
-
-
-function v(e) {
-    return r.a.createHash("md5").update(e).digest()
-}
-
-function T() {
-    const a = new Buffer.alloc(16, v(decodeKey))
-        , c = new Buffer.alloc(16, v(decodeIv))
-        , i = r.a.createDecipheriv("aes-128-cbc", a, c);
-    let s = i.update(response, "base64", "utf-8");
-    return s += i.final("utf-8"),
-        s
-}
-
+console.log(H());
+var n = (new Date).getTime() - 2605
+              , t = "s54zv9bm1vd5czfujy6nnuxj1l4g2ny6"
+              , r = Object(H)()
+              , a = i()(n + r + i()(r + t + n));
+            return e.params = Object.assign(e.params || {}, {
+                mainVersion: h.getMainVersion(),
+                comParam_curTime: n,
+                comParam_seqCode: r,
+                comParam_signature: a,
+                isCheck: !0,
+                locale: "zh-cn"
+            })
 
 console.log(T());
