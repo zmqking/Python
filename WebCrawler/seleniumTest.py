@@ -117,7 +117,7 @@ image.show()
 time.sleep(5)
 image.close()
 # 创建WebDriverWait实例，等待最多10秒
-wait = WebDriverWait(driver, 30)
+wait = WebDriverWait(driver, 40)
 # 等待直到元素可见
 entry = wait.until(EC.element_to_be_clickable((By.ID, 'hlTrainLink')))
 entry.click()
@@ -136,7 +136,7 @@ def course_list():
     table = getObjectById('gvClassCourseList')
     trs = table.find_elements(By.TAG_NAME, 'tr')
     if len(trs) > 2:
-        for i in range(2, len(trs) - 1):
+        for i in range(2, len(trs)):
             # 使用XPath获取所需的元素 /html/body/form/div[6]/div/table/tbody/tr[2]/td[6]/div/span
             ratio = getObjectByXpath("//table[@id='gvClassCourseList']//tr[" + str(i) + "]/td[6]/div/span")
             curose_txt = getObjectByXpath("//table[@id='gvClassCourseList']//tr[" + str(i) + "]/td[4]")
@@ -148,8 +148,10 @@ def course_list():
                 studySubject.click()
                 chapter_list()
                 print('%s 播放完成一个课程'%get_time())
-        print('%s 课程全部播放完成'%get_time())
-        driver.quit()
+                driver.back()
+                switch_page_iframe('eduMainFrame', 1)
+        print('%s %s%s-恭喜你，课程全部播放完成!!!'%(get_time(),user_name,idcard))
+        # driver.quit()
 
 
 def chapter_list():
