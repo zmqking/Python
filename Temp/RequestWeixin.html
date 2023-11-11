@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>test weixin api</title>
+    <!--    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>-->
+    <script type="text/javascript">
+        window.onload = function () {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', 'https://api.weixin.qq.com/sns/oauth2/access_token?appid=wxb2c7aa0c3428400f&secret=9114c1deaecbd5a63accc52239471348&code=031Rnm000G8RuQ11w30007Kol93Rnm0y', true);
+            // 设置请求头，允许跨域访问
+            xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
+            // xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        console.log(xhr.responseText);
+                    } else {
+                        console.error('Request failed. Status:', xhr.status);
+                    }
+                }
+            };
+            xhr.send();
+
+        }
+    </script>
+</head>
+<body>
+<!--<script>-->
+<!--    $.ajax({-->
+<!--        url: "https://api.weixin.qq.com/sns/oauth2/access_token?appid=wxb2c7aa0c3428400f&secret=9114c1deaecbd5a63accc52239471348&code=031Rnm000G8RuQ11w30007Kol93Rnm0y",-->
+<!--        type: "POST",-->
+<!--        // data: {-->
+<!--        //     param1: "value1",-->
+<!--        //     param2: "value2"-->
+<!--        // },-->
+<!--        dataType: 'jsonp',-->
+<!--        success: function (response) {-->
+<!--            console.log(response);-->
+<!--        },-->
+<!--        error: function (xhr, status, error) {-->
+<!--            console.log(error);-->
+<!--        }-->
+<!--    });-->
+
+<!--</script>-->
+</body>
+</html>
