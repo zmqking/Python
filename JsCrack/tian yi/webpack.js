@@ -1,5 +1,5 @@
 window = global;
-var pn;
+var _pn;
 (function(e) {
     function n(n) {
         for (var r, a, i = n[0], u = n[1], d = n[2], s = 0, l = []; s < i.length; s++)
@@ -1140,7 +1140,7 @@ var pn;
     var p = s;
     c.push([0, "chunk-vendors"]),
     // t()
-        pn = u;
+        _pn = u;
 }
 )({
     0: function(e, n, t) {
@@ -10587,4 +10587,43 @@ var pn;
         n["a"] = c
     }
 });
-console.log(pn('7f6d'));
+
+var e = {
+    "url": "account/login",
+    "method": "post",
+    "data": "userName=4512pp%40163.com&password=hwnzwNnJoADPmUMsFzeD8Q%3D%3D",
+    "headers": {
+        "common": {
+            "Accept": "application/json, text/plain, */*"
+        },
+        "delete": {},
+        "get": {},
+        "head": {},
+        "post": {
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        "put": {
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        "patch": {
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        "Content-Type": "application/x-www-form-urlencoded",
+        "x-riskdevicesign": "b38d4f379e8ede2707f6c0668adcf93e"
+    },
+    "baseURL": "/",
+    "transformRequest": [
+        null
+    ],
+    "transformResponse": [
+        null
+    ],
+    "timeout": 60000,
+    "xsrfCookieName": "XSRF-TOKEN",
+    "xsrfHeaderName": "X-XSRF-TOKEN",
+    "maxContentLength": -1,
+    "params": {
+        "referrer": "wap"
+    },
+    "seq": 12
+}
