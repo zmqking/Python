@@ -79,16 +79,13 @@ def getObjectById(id):
 def getObjectByXpath(path):
     return driver.find_element(By.XPATH, path)
 
-
+iframe=None;
 def switch_page_iframe(ifrName, index):
-    global iframe
     # 切换到新窗口
     driver.switch_to.window(driver.window_handles[index])
     # 切换到iframe
     iframe = getObjectById(ifrName)
     driver.switch_to.frame(iframe)
-    return driver
-
 
 element = getObjectById('tbx_UserID')
 element.send_keys(idcard)
@@ -113,7 +110,7 @@ image.show()
 time.sleep(5)
 image.close()
 # 创建WebDriverWait实例，等待最多10秒
-wait = WebDriverWait(driver, 40)
+wait = WebDriverWait(driver, 30)
 # 等待直到元素可见
 entry = wait.until(EC.element_to_be_clickable((By.ID, 'hlTrainLink')))
 entry.click()
