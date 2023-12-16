@@ -4,6 +4,7 @@ import os
 
 def get_all_files(directory):
     all_files = []
+    # 遍历文件目录
     for root, dirs, files in os.walk(directory):
         for file in files:
             all_files.append(os.path.join(root, file))

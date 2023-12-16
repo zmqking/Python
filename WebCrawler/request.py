@@ -21,7 +21,43 @@
 
 from time import sleep, ctime
 import threading
+import logging
 
+import ctypes
+
+# 定义消息框的类型常量
+MB_OK = 0x0  # 确认按钮
+MB_OKCANCEL = 0x1  # 确认和取消按钮
+MB_YESNO = 0x4  # 是和否按钮
+
+# 弹出消息框
+result = ctypes.windll.user32.MessageBoxW(None, '这是一个提示框', '提示', MB_OK)
+
+# 处理消息框的返回结果
+if result == 1:  # 用户点击了确认按钮
+    print('用户点击了确认按钮')
+else:  # 用户点击了其他按钮或关闭了窗口
+    print('用户点击了其他按钮或关闭了窗口')
+
+# region 日志记录
+# logging.basicConfig(filename='request.log', level=logging.DEBUG,
+#                     format='%(asctime)s %(levelname)s: %(message)s')
+#
+# # 记录日志
+# logging.debug('这是一个调试级别的日志')
+# logging.info('这是一个信息级别的日志')
+# logging.warning('这是一个警告级别的日志')
+# logging.error('这是一个错误级别的日志')
+# logging.critical('这是一个严重错误级别的日志')
+# endregion
+
+def testLog():
+    try:
+        print((1 / 0))
+    except Exception as ex:
+        logging.error(ex)
+
+testLog()
 
 def task1():
     for _ in range(3):
