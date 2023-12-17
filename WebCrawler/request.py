@@ -30,14 +30,6 @@ MB_OK = 0x0  # 确认按钮
 MB_OKCANCEL = 0x1  # 确认和取消按钮
 MB_YESNO = 0x4  # 是和否按钮
 
-# 弹出消息框
-result = ctypes.windll.user32.MessageBoxW(None, '这是一个提示框', '提示', MB_OK)
-
-# 处理消息框的返回结果
-if result == 1:  # 用户点击了确认按钮
-    print('用户点击了确认按钮')
-else:  # 用户点击了其他按钮或关闭了窗口
-    print('用户点击了其他按钮或关闭了窗口')
 
 # region 日志记录
 # logging.basicConfig(filename='request.log', level=logging.DEBUG,
@@ -57,7 +49,9 @@ def testLog():
     except Exception as ex:
         logging.error(ex)
 
+
 testLog()
+
 
 def task1():
     for _ in range(3):
@@ -65,15 +59,27 @@ def task1():
         sleep(1)
 
 
+result = None
+
+
 def task2():
     for _ in range(3):
         print('task2正在运行')
         sleep(1)
+        # 弹出消息框
+        result = ctypes.windll.user32.MessageBoxW(None, '这是一个提示框', '提示', MB_OK)
 
     # if __name__ == "__main__":
+
+
 t1 = threading.Thread(target=task1)
 t2 = threading.Thread(target=task2)
 
 t1.start()
 t2.start()
 
+# 处理消息框的返回结果
+if result == 1:  # 用户点击了确认按钮
+    print('用户点击了确认按钮')
+else:  # 用户点击了其他按钮或关闭了窗口
+    print('用户点击了其他按钮或关闭了窗口')
