@@ -19,25 +19,64 @@
 # print(response.content.decode('utf-8'))
 
 
-from time import sleep, ctime
-import threading
-import logging
+# from time import sleep, ctime
+# import threading
+# import logging
+# from functools import reduce
+#
+# import ctypes
 
-import ctypes
 
+# region 系统消息框
 # 定义消息框的类型常量
-MB_OK = 0x0  # 确认按钮
-MB_OKCANCEL = 0x1  # 确认和取消按钮
-MB_YESNO = 0x4  # 是和否按钮
+# MB_OK = 0x0  # 确认按钮
+# MB_OKCANCEL = 0x1  # 确认和取消按钮
+# MB_YESNO = 0x4  # 是和否按钮
+#
+# # 弹出消息框
+# result = ctypes.windll.user32.MessageBoxW(None, '这是一个提示框', '提示', MB_OK)
+#
+# # 处理消息框的返回结果
+# if result == 1:  # 用户点击了确认按钮
+#     print('用户点击了确认按钮')
+# else:  # 用户点击了其他按钮或关闭了窗口
+#     print('用户点击了其他按钮或关闭了窗口')
+# endregion
 
-# 弹出消息框
-result = ctypes.windll.user32.MessageBoxW(None, '这是一个提示框', '提示', MB_OK)
-
-# 处理消息框的返回结果
-if result == 1:  # 用户点击了确认按钮
-    print('用户点击了确认按钮')
-else:  # 用户点击了其他按钮或关闭了窗口
-    print('用户点击了其他按钮或关闭了窗口')
+# region lambda表达式和高阶函数
+# lst = [2, 4, 6, 8, 10]
+# print(reduce(lambda x, y: x + y, lst))
+# max = reduce(lambda x, y: x if x > y else y, lst)
+# print(max)
+# min = reduce(lambda x, y: x if x < y else x, lst)
+# print(min)
+#
+# b = lambda x: "Even" if x % 2 == 0 else "Odd"
+# print(b(2))
+#
+# students = [
+#     {
+#         "name": "John Doe",
+#         "father name": "Robert Doe",
+#         "Address": "123 Hall street"
+#     },
+#     {
+#         "name": "Rahul Garg",
+#         "father name": "Kamal Garg",
+#         "Address": "3-Upper-Street corner"
+#     },
+#     {
+#         "name": "Angela Steven",
+#         "father name": "Jabob steven",
+#         "Address": "Unknown"
+#     }
+# ]
+# print(list(map(lambda student: student['name'], students)))
+#
+# fruits = ['mango', 'apple', 'orange', 'cherry', 'grapes']
+# res = list(filter(lambda fruit: 'g' in fruit, fruits))
+# print(res)
+# endregion
 
 # region 日志记录
 # logging.basicConfig(filename='request.log', level=logging.DEBUG,
@@ -51,29 +90,30 @@ else:  # 用户点击了其他按钮或关闭了窗口
 # logging.critical('这是一个严重错误级别的日志')
 # endregion
 
-def testLog():
-    try:
-        print((1 / 0))
-    except Exception as ex:
-        logging.error(ex)
-
-testLog()
-
-def task1():
-    for _ in range(3):
-        print('task1正在运行')
-        sleep(1)
-
-
-def task2():
-    for _ in range(3):
-        print('task2正在运行')
-        sleep(1)
-
-    # if __name__ == "__main__":
-t1 = threading.Thread(target=task1)
-t2 = threading.Thread(target=task2)
-
-t1.start()
-t2.start()
-
+# region 线程
+# def testLog():
+#     try:
+#         print((1 / 0))
+#     except Exception as ex:
+#         logging.error(ex)
+#
+# testLog()
+#
+# def task1():
+#     for _ in range(3):
+#         print('task1正在运行')
+#         sleep(1)
+#
+#
+# def task2():
+#     for _ in range(3):
+#         print('task2正在运行')
+#         sleep(1)
+#
+#     # if __name__ == "__main__":
+# t1 = threading.Thread(target=task1)
+# t2 = threading.Thread(target=task2)
+#
+# t1.start()
+# t2.start()
+# endregion
