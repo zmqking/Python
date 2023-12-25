@@ -11,7 +11,12 @@ from selenium.webdriver.common.by import By
 from PIL import Image
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+import ctypes
 
+# 定义消息框的类型常量
+MB_OK = 0x0  # 确认按钮
+MB_OKCANCEL = 0x1  # 确认和取消按钮
+MB_YESNO = 0x4  # 是和否按钮
 # 获取配置对象 => 什么样的浏览器就选择什么浏览器配置
 # region 不自动关闭浏览器
 
@@ -89,7 +94,7 @@ def getObjectByXpath(path):
 
 
 iframe = None
-
+result = None
 
 def switch_page_iframe(ifrName, index):
     # 切换到新窗口
@@ -187,6 +192,7 @@ def course_list():
 
         except Exception as ex:
             logging.error("course_list函数报错：", ex)
+            result = ctypes.windll.user32.MessageBoxW(None, ex, '提示', MB_OK)
     print('%s %s%s-恭喜你，课程全部播放完成!!!' % (get_time(), user_name, idcard))
     # driver.quit()430903200104015130
 
@@ -206,6 +212,7 @@ def chapter_list():
                 curriculum_play()
     except Exception as ex:
         logging.error("chapter_list函数报错：", ex)
+        result = ctypes.windll.user32.MessageBoxW(None, ex, '提示', MB_OK)
 
 
 def curriculum_play():
@@ -269,6 +276,10 @@ def curriculum_play():
         # switch_page_iframe('eduMainFrame', 2)
 
     except Exception as ex:
+        strEx = str(ex)
+        if strEx.find("确定") > -1:
+            # 弹出消息框
+            result = ctypes.windll.user32.MessageBoxW(None, strEx, '提示', MB_OK)
         logging.error("curriculum_play函数报错：", ex)
 
 
@@ -280,6 +291,7 @@ def video_page_refresh(play_m):
         return play_m
     except Exception as ex:
         logging.error("video_page_refresh函数报错：", ex)
+        result = ctypes.windll.user32.MessageBoxW(None, ex, '提示', MB_OK)
 
 
 def retry_get_time(current_time, play_m, total_duration):
@@ -291,6 +303,7 @@ def retry_get_time(current_time, play_m, total_duration):
         return current_time, total_duration
     except Exception as ex:
         logging.error("retry_get_time函数报错：", ex)
+        result = ctypes.windll.user32.MessageBoxW(None, ex, '提示', MB_OK)
 
 
 # endregion
