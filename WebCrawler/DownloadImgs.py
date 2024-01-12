@@ -13,7 +13,6 @@ heads = {
 
 
 # region 异步请求
-# https://shemaleleaks.com/photos/b/u/busty-ema/1000/busty-ema_0159.jpg
 async def writeImageFile(client, url):
     response = await client.get(url, headers=heads)
 
