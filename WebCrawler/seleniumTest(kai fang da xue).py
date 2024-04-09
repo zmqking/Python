@@ -7,15 +7,12 @@ import time
 import logging
 # 打开文本文档给人编辑
 from selenium import webdriver
+from selenium.common import NoSuchElementException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 # region 不自动关闭浏览器
-
-# 配置日志记录
-logging.basicConfig(filename='app.log', level=logging.INFO,
-                    format='%(asctime)s %(levelname)s: %(message)s')
 
 
 class KaiFangDaXue:
@@ -42,6 +39,10 @@ class KaiFangDaXue:
         # 获取driver对象, 并将配置好的option传入进去
         # driver = webdriver.Chrome()
         self.driver.get('http://decai.hnzjpx.net/')
+        # 配置日志记录
+        logging.basicConfig(filename=f'{self.get_time().replace("-","").replace(":","").replace(" ","")[:8]}.log',
+                            level=logging.INFO,
+                            format='%(asctime)s %(levelname)s: %(message)s')
 
     def get_time(self):
         # 获取当前时间的时间戳
@@ -59,8 +60,11 @@ class KaiFangDaXue:
     def getObjectByXpath(self, path):
         return self.driver.find_element(By.XPATH, path)
 
-    def getObjectByClassName(self, css):
-        return self.driver.find_element(By.CLASS_NAME, css)
+    def getObjectByClassName(self, className):
+        return self.driver.find_element(By.CLASS_NAME, className)
+
+    def getObjectByCssSelector(self, css):
+        return self.driver.find_element(By.CSS_SELECTOR, f"[class='{css}']")
 
     def get_is_done(self):
         str_dones = WebDriverWait(self.driver, 10).until(
@@ -76,12 +80,16 @@ class KaiFangDaXue:
         print(f'{msg} {self.get_time()}')
 
     def login(self):
-        btn_know = WebDriverWait(self.driver, 10).until(
-            EC.presence_of_element_located((By.CLASS_NAME, "ant-modal-close-x"))
-        )
-
-        self.log_info('点击知道了')
-        btn_know.click()
+        try:
+            btn_know = WebDriverWait(self.driver, 10).until(
+                EC.presence_of_element_located((By.CLASS_NAME, "ant-modal-close-x"))
+            )
+            # btn_know = self.getObjectByClassName('ant-modal-close-x')
+            if btn_know is not None:
+                self.log_info('点击知道了')
+                btn_know.click()
+        except NoSuchElementException:
+            self.log_info('无知道了确认框！')
 
         btn_login = WebDriverWait(self.driver, 10).until(
             EC.presence_of_element_located((By.XPATH, '//*[@id="main"]/div/div[1]/div[2]/div[1]/div/div[2]/button[1]'))
@@ -129,68 +137,83 @@ class KaiFangDaXue:
         self.log_info(f'需要学习的课程：{len(self.btn_details)}')
 
     def play_video(self):
-        try:
-            for detail in self.btn_details:
-                if detail.tag_name == 'button':
-                    detail.click()
-                    self.log_info('视频页面知道了')
-                    # 知道了
+        for detail in self.btn_details:
+            if detail.tag_name == 'button':
+                detail.click()
+                self.log_info('视频页面知道了')
+                # 知道了
+                try:
                     btn_know1 = WebDriverWait(self.driver, 10).until(
                         EC.presence_of_element_located(
                             (By.CSS_SELECTOR, "[class='ant-btn ant-btn-primary ant-btn-lg']"))
                     )
-                    btn_know1.click()
+                    # btn_know1 = self.getObjectByCssSelector('ant-btn ant-btn-primary ant-btn-lg')
+                    if btn_know1 is not None:
+                        btn_know1.click()
+                except NoSuchElementException:
+                    self.log_info('无知道了确认框！')
 
-                    self.log_info('获取课程列表')
+                self.log_info('获取课程列表')
+                time.sleep(1)
+                # 获取进度集合
+                progresss = WebDriverWait(self.driver, 10).until(
+                    EC.presence_of_all_elements_located((By.CLASS_NAME, "ant-progress-text"))
+                )
+                btn_studys = self.immediately_study()
+                self.log_info("立即学习按钮集合：%s" % len(btn_studys))
+                btn_studys.pop(0)
+                self.log_info("移除后的学习按钮集合：%s" % len(btn_studys))
+                for i in range(len(progresss)):
+                    # if progresss[i].text.strip() != "" and progresss[i].text.endswith('%'):
+                    self.log_info(f'第{i}节，进度{progresss[i].text}')
+                    btn_studys[i].click()
+
+                    try:
+                        time.sleep(2)
+                        # 视频页知道了
+                        btn_video_know = self.getObjectByCssSelector('ant-btn ant-btn-primary ant-btn-lg')
+                        # btn_video_know = WebDriverWait(self.driver, 10).until(
+                        #     EC.presence_of_element_located(
+                        #         (By.CSS_SELECTOR, "[class='ant-btn ant-btn-primary ant-btn-lg']"))
+                        # )
+                        if btn_video_know is not None:
+                            btn_video_know.click()
+                    except NoSuchElementException:
+                        self.log_info('无知道了确认框！')
+
                     time.sleep(1)
-                    # 获取进度集合
+                    self.set_playRate()
+
+                    while self.get_is_done():
+                        time.sleep(2)
+                        self.set_playRate()
+
+                    self.driver.back()  # 返回上一页
+
+                    time.sleep(1)
                     progresss = WebDriverWait(self.driver, 10).until(
                         EC.presence_of_all_elements_located((By.CLASS_NAME, "ant-progress-text"))
                     )
+
+
                     btn_studys = self.immediately_study()
-                    self.log_info("立即学习按钮集合：%s" % len(btn_studys))
                     btn_studys.pop(0)
-                    self.log_info("移除后的学习按钮集合：%s" % len(btn_studys))
-                    for i in range(len(progresss)):
-                        self.log_info(progresss[i].text)
-                        if progresss[i].text.strip() != "" and progresss[i].text.endswith('%'):
-                            self.log_info('第%s节' % i)
-                            btn_studys[i].click()
 
-                            time.sleep(2)
-                            # 视频页知道了
-                            btn_video_know = WebDriverWait(self.driver, 10).until(
-                                EC.presence_of_element_located(
-                                    (By.CSS_SELECTOR, "[class='ant-btn ant-btn-primary ant-btn-lg']"))
-                            )
-                            if btn_video_know is not None:
-                                btn_video_know.click()
+            self.driver.back()
 
-                            time.sleep(1)
-                            self.set_playRate()
-
-                            while self.get_is_done():
-                                time.sleep(2)
-                                self.set_playRate()
-
-                            self.driver.back()  # 返回上一页
-
-                            time.sleep(1)
-                            progresss = WebDriverWait(self.driver, 10).until(
-                                EC.presence_of_all_elements_located((By.CLASS_NAME, "ant-progress-text"))
-                            )
-
-                        btn_studys = self.immediately_study()
-                        btn_studys.pop(0)
-
-                self.driver.back()
-                time.sleep(1)
-                self.btn_details = WebDriverWait(self.driver, 10).until(
-                    EC.presence_of_all_elements_located(
-                        (By.CSS_SELECTOR, "[class='btn-qm btn-qm-shadow btn-qm-xs btn-radius']"))
-                )
-        except Exception as ex:
-            self.log_info(ex)
+            self.log_info('再次进行中。。。')
+            # 进行中链接
+            self.btnProccess = WebDriverWait(self.driver, 10).until(
+                EC.presence_of_element_located((By.XPATH, '//*[@id="main"]/div/div[2]/div[2]/div/div[3]/p/span[2]'))
+            )
+            self.btnProccess.click()
+            time.sleep(1)
+            self.log_info('再次获取查看详情。。。')
+            self.btn_details = WebDriverWait(self.driver, 10).until(
+                EC.presence_of_all_elements_located(
+                    (By.CSS_SELECTOR, "[class='btn-qm btn-qm-shadow btn-qm-xs btn-radius']"))
+            )
+        self.log_info('恭喜，课程已全部学习完成！')
 
     def immediately_study(self):
         # 获取立即学习按钮集合
@@ -212,15 +235,19 @@ class KaiFangDaXue:
 
 if __name__ == '__main__':
     # region 命令行输入方式
-    user_name = input('请输入用户名：').strip()
-    while user_name == '':
-        user_name = input('请输入用户名：').strip()
-    pwd = input('请输入密码：').strip()
-    while pwd == '':
-        pwd = input('请输入密码：').strip()
-    headless = input('是否无头模式：').strip()
-    while headless == '':
-        headless = input('是否无头模式：').strip()
+    # user_name = input('请输入用户名：').strip()
+    # while user_name == '':
+    #     user_name = input('请输入用户名：').strip()
+    # pwd = input('请输入密码：').strip()
+    # while pwd == '':
+    #     pwd = input('请输入密码：').strip()
+    # headless = input('headless：').strip()
+    # while headless == '':
+    #     headless = input('headless：').strip()
+
+    user_name ='13875271978'
+    pwd = 'lql271978'
+    headless='n'
     # endregion
     _kaifang = KaiFangDaXue(user_name, pwd, '2', headless)
     _kaifang.login()
