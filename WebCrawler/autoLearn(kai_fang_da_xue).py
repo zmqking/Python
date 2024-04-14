@@ -87,7 +87,6 @@ class KaiFangDaXue:
                 (By.CLASS_NAME, "ant-tag-text"))
         )
         flag = any(element.text == '未完成' for element in str_dones)
-
         return flag
 
     def log_info(self, msg):
@@ -194,7 +193,7 @@ class KaiFangDaXue:
                     btn_studys.pop(0)
                     self.log_info("移除后的学习按钮集合：%s" % len(btn_studys))
                     for i in range(len(progresss)):
-                        if len(progresss) > 0 and progresss[i].text.strip() != "" and progresss[i].text.endswith('%'):
+                        if i < len(progresss) and progresss[i].text.strip() != "" and progresss[i].text.endswith('%'):
                             self.log_info(f'第{i}节，进度{progresss[i].text}')
                             btn_studys[i].click()
 
@@ -217,12 +216,14 @@ class KaiFangDaXue:
                                     videoss = WebDriverWait(self.driver, 5).until(
                                         EC.presence_of_element_located((By.TAG_NAME, 'video'))
                                     )
+                                    self.log_info('确认视频控件')
                                     break
-                                except NoSuchElementException:
+                                except:
                                     self.driver.refresh()
 
                             self.set_playRate()
 
+                            self.log_info('设置速率')
                             while self.get_is_done():
                                 time.sleep(2)
                                 self.set_playRate()
@@ -334,7 +335,7 @@ if __name__ == '__main__':
     pwd = 'lql271978'
     headless = 'y'
     # endregion
-    _kaifang = KaiFangDaXue(user_name, pwd, '8', headless)
+    _kaifang = KaiFangDaXue(user_name, pwd, '16', headless)
     _kaifang.login()
     _kaifang.play_video()
 
