@@ -2,7 +2,7 @@
 # Project -> File:Python -> selenium 
 # Author:king
 # Date:2023/5/17
-
+import math
 import time
 import logging
 # 打开文本文档给人编辑
@@ -22,6 +22,7 @@ class KaiFangDaXue:
         self.speed = speed
         self.name = name
         self.pwd = pwd
+        self.Watched = []
         options = webdriver.ChromeOptions()
         if headless == 'y':
             # 开启无头模式
@@ -33,6 +34,8 @@ class KaiFangDaXue:
         options.add_experimental_option("useAutomationExtension", False)
         options.add_experimental_option("excludeSwitches", ['enable-automation'])
         options.add_argument("--incognito")
+        # 添加静音参数
+        options.add_argument("--mute-audio")
         options.add_experimental_option("detach", True)
         # 定义不同的User-Agent列表
         user_agents = [
@@ -139,30 +142,33 @@ class KaiFangDaXue:
                 self.driver.refresh()
 
         self.log_info('进行中')
-        self.get_btnProccess()
+        # self.get_btnProccess()
 
         self.log_info('查看详情')
         time.sleep(2)
         self.get_btn_details()
 
-    def get_btnProccess(self):
-        while True:
-            try:
-                # 进行中链接
-                self.btnProccess = WebDriverWait(self.driver, 5).until(
-                    EC.presence_of_element_located((By.XPATH, '//*[@id="main"]/div/div[2]/div[2]/div/div[3]/p/span[2]'))
-                )
-                self.btnProccess.click()
-                break
-            except TimeoutException:
-                self.driver.refresh()
+    # def get_btnProccess(self):
+    #     while True:
+    #         try:
+    #             # 进行中链接
+    #             self.btnProccess = WebDriverWait(self.driver, 5).until(
+    #                 EC.presence_of_element_located((By.XPATH, '//*[@id="main"]/div/div[2]/div[2]/div/div[3]/p/span[2]'))
+    #             )
+    #             self.btnProccess.click()
+    #             break
+    #         except TimeoutException:
+    #             self.driver.refresh()
 
     def play_video(self):
         self.log_info(f"学习课程数：{len(self.btn_details)}")
-        for detail in self.btn_details:
+        flag = True
+
+        for de in range(len(self.btn_details)):
             try:
-                if detail.tag_name == 'button':
-                    detail.click()
+                print('进入查看详情循环遍历！')
+                if self.btn_details[de].tag_name == 'button':
+                    self.btn_details[de].click()
                     self.log_info('视频页面知道了')
                     # 知道了
                     try:
@@ -181,20 +187,31 @@ class KaiFangDaXue:
                     # 获取进度集合
                     while True:
                         try:
-                            progresss = WebDriverWait(self.driver, 5).until(
-                                EC.presence_of_all_elements_located((By.CLASS_NAME, "ant-progress-text"))
+                            p_progresss = WebDriverWait(self.driver, 5).until(
+                                EC.presence_of_all_elements_located((By.CLASS_NAME, "progressWrap"))
+                            )
+
+                            titles = WebDriverWait(self.driver, 5).until(
+                                EC.presence_of_all_elements_located((By.CSS_SELECTOR, "p[class='title']"))
                             )
                             break
                         except TimeoutException:
+                            print('获取章节进度超时')
                             self.driver.refresh()
 
                     btn_studys = self.immediately_study()
                     self.log_info("立即学习按钮集合：%s" % len(btn_studys))
                     btn_studys.pop(0)
                     self.log_info("移除后的学习按钮集合：%s" % len(btn_studys))
-                    for i in range(len(progresss)):
-                        if i < len(progresss) and progresss[i].text.strip() != "" and progresss[i].text.endswith('%'):
-                            self.log_info(f'第{i}节，进度{progresss[i].text}')
+                    for i in range(len(p_progresss)):
+                        if titles[i].text.find('考试') > -1:
+                            self.Watched.append(self.btn_details[de])
+                            continue
+
+                        progress = p_progresss[i].find_element(By.CLASS_NAME, 'ant-progress-text')
+                        str_progress = progress.text
+                        if i < len(p_progresss) and str_progress.strip() != "" and str_progress.endswith('%'):
+                            self.log_info(f'第{i + 1}节《{titles[i].text}》，进度{str_progress}')
                             btn_studys[i].click()
 
                             try:
@@ -213,28 +230,78 @@ class KaiFangDaXue:
                             time.sleep(1)
                             while True:
                                 try:
-                                    videoss = WebDriverWait(self.driver, 5).until(
+                                    self.videoss = WebDriverWait(self.driver, 5).until(
                                         EC.presence_of_element_located((By.TAG_NAME, 'video'))
                                     )
                                     self.log_info('确认视频控件')
                                     break
-                                except:
+                                except Exception as ex:
+                                    self.log_info(f'视频控件控件不存在：{ex}')
                                     self.driver.refresh()
 
-                            self.set_playRate()
+                            # 获取未播放完的节点
+                            sections = WebDriverWait(self.driver, 5).until(
+                                EC.presence_of_all_elements_located(
+                                    (By.CLASS_NAME, "ant-tag-text"))
+                            )
+                            video_titles = WebDriverWait(self.driver, 5).until(
+                                EC.presence_of_all_elements_located(
+                                    (By.CSS_SELECTOR, "span[class='mr10']"))
+                            )
+                            for j in range(len(sections)):
+                                print(f'{video_titles[j].text}；状态：{sections[j].text}')
+                                if sections[j].text == '未完成':
+                                    sections[j].click()
 
-                            self.log_info('设置速率')
-                            while self.get_is_done():
-                                time.sleep(2)
-                                self.set_playRate()
+                                    self.log_info('设置速率')
+                                    self.videoss = self.driver.find_element(By.TAG_NAME, 'video')
+                                    print(self.videoss)
+                                    cur_time = self.driver.execute_script("return arguments[0].currentTime",
+                                                                          self.videoss)
+                                    duration = self.driver.execute_script("return arguments[0].duration",
+                                                                          self.videoss)
+                                    # cur_time = float(self.videoss.get_attribute('currentTime'))
+                                    # duration = float(self.videoss.get_attribute('duration'))
+                                    while (
+                                            cur_time + 30) > duration or cur_time is None or duration is None or math.isnan(
+                                            cur_time) or math.isnan(duration):
+                                        print('重新获取视频控件值')
+                                        sections[j].click()
+                                        time.sleep(1)
+                                        # self.driver.refresh()
+                                        cur_time = float(self.videoss.get_attribute('currentTime'))
+                                        duration = float(self.videoss.get_attribute('duration'))
 
+                                    print('cur_time:%s' % cur_time)
+                                    print('duration:%s' % duration)
+                                    while cur_time < duration:
+                                        temp_cur_time = cur_time
+                                        time.sleep(2)
+                                        self.set_playRate()
+                                        cur_time = float(self.videoss.get_attribute('currentTime'))
+                                        duration = float(self.videoss.get_attribute('duration'))
+                                        if temp_cur_time > cur_time:
+                                            break
+                                        print(cur_time)
+                                        # self.videoss = self.driver.find_element(By.TAG_NAME, 'video')
+
+                                    # sections = WebDriverWait(self.driver, 5).until(
+                                    #     EC.presence_of_all_elements_located(
+                                    #         (By.CLASS_NAME, "ant-tag-text"))
+                                    # )
+
+                            print('当前章节已完成-----------')
                             self.driver.back()  # 返回上一页
 
                             time.sleep(1)
                             while True:
                                 try:
-                                    progresss = WebDriverWait(self.driver, 5).until(
-                                        EC.presence_of_all_elements_located((By.CLASS_NAME, "ant-progress-text"))
+                                    p_progresss = WebDriverWait(self.driver, 5).until(
+                                        EC.presence_of_all_elements_located(
+                                            (By.CLASS_NAME, "progressWrap"))
+                                    )
+                                    titles = WebDriverWait(self.driver, 5).until(
+                                        EC.presence_of_all_elements_located((By.CSS_SELECTOR, "p[class='title']"))
                                     )
                                     break
                                 except TimeoutException:
@@ -242,18 +309,22 @@ class KaiFangDaXue:
 
                             btn_studys = self.immediately_study()
                             btn_studys.pop(0)
-            except StaleElementReferenceException:
+
+                self.driver.back()
+                self.log_info('再次进行中。。。')
+                # 进行中链接
+                # self.get_btnProccess()
+
+                time.sleep(1)
+                self.log_info('再次获取查看详情。。。')
                 self.get_btn_details()
+            except StaleElementReferenceException:
+                print('控件不是最新错误！')
+                flag = False
+                self.get_btn_details()
+            # if flag:
+            #     self.driver.back()
 
-            self.driver.back()
-
-            self.log_info('再次进行中。。。')
-            # 进行中链接
-            self.get_btnProccess()
-
-            time.sleep(1)
-            self.log_info('再次获取查看详情。。。')
-            self.get_btn_details()
         self.log_info('恭喜，课程已全部学习完成！')
 
     def get_btn_details(self):
@@ -276,6 +347,7 @@ class KaiFangDaXue:
                         self.log_info('《已结业》')
                 break
             except TimeoutException:
+                print('获取查询详情集合超时！')
                 self.driver.refresh()
 
     def immediately_study(self):
@@ -291,32 +363,40 @@ class KaiFangDaXue:
                 self.driver.refresh()
         return btn_studys
 
+    # region 按倍率播放
+    # def set_playRate(self):
+    #     # 使用JavaScript覆盖元素的点击事件
+    #     self.driver.execute_script("""
+    #                                 var str_video = document.getElementsByTagName('video');
+    #                                 if (str_video !== null && str_video !== undefined) {
+    #                                     console.log('str_video-----',str_video);
+    #                                         // 当视频播放时，设置播放速度
+    #                                     str_video[0].playbackRate = %s;
+    #                                 }
+    #                                 """ % self.speed)
+    # endregion
+
+    # region 不按倍率播放
     def set_playRate(self):
         # 使用JavaScript覆盖元素的点击事件
-        self.driver.execute_script("""
-                                    /*function myFunction() {*/
+        self.driver.execute_script("""  
                                         var str_video = document.getElementsByTagName('video');
                                         if (str_video !== null && str_video !== undefined) {
                                             // 移除事件处理程序
-                                            /*str_video[0].restMove = null;
+                                            str_video[0].restMove = null;
                                             str_video[0].onseeking = null;
-                                            str_video[0].onseeked = null;*/
+                                            str_video[0].onseeked = null;
                                             console.log('str_video-----',str_video);
-                                                // 当视频播放时，设置播放速度
-                                            str_video[0].playbackRate = %s;
-                                            /*var cur_time =str_video[0].currentTime; 
+                                            var cur_time =parseFloat(str_video[0].currentTime); 
+                                            console.log('cur_time-----',cur_time);
                                             if (cur_time === null || cur_time === undefined || isNaN(cur_time)) {
                                             } else {
                                                 cur_time += 30;
                                                 str_video[0].currentTime = cur_time;
-                                            }*/
+                                            }
                                         }
-                                    /*}
-                                    
-                                    // 每隔 2 秒调用 myFunction() 函数
-                                    setInterval(myFunction, 2000);*/
-
-                                    """ % self.speed)
+                                    """)
+    # endregion
 
 
 if __name__ == '__main__':
