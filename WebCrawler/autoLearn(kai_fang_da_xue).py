@@ -145,7 +145,7 @@ class KaiFangDaXue:
         # self.get_btnProccess()
 
         self.log_info('查看详情')
-        time.sleep(2)
+        time.sleep(1)
         self.get_btn_details()
 
     # def get_btnProccess(self):
@@ -215,7 +215,7 @@ class KaiFangDaXue:
                             btn_studys[i].click()
 
                             try:
-                                time.sleep(2)
+                                time.sleep(1)
                                 # 视频页知道了
                                 btn_video_know = self.getObjectByCssSelector('ant-btn ant-btn-primary ant-btn-lg')
                                 # btn_video_know = WebDriverWait(self.driver, 5).until(
@@ -250,6 +250,8 @@ class KaiFangDaXue:
                             )
                             for j in range(len(sections)):
                                 print(f'{video_titles[j].text}；状态：{sections[j].text}')
+                                if video_titles[j].text.find('练习') > 0:
+                                    continue
                                 if sections[j].text == '未完成':
                                     sections[j].click()
 
@@ -391,32 +393,42 @@ class KaiFangDaXue:
                                             console.log('cur_time-----',cur_time);
                                             if (cur_time === null || cur_time === undefined || isNaN(cur_time)) {
                                             } else {
-                                                cur_time += 30;
+                                                cur_time += 50;
                                                 str_video[0].currentTime = cur_time;
                                             }
                                         }
                                     """)
     # endregion
 
-
 if __name__ == '__main__':
     # region 命令行输入方式
-    # user_name = input('请输入用户名：').strip()
-    # while user_name == '':
-    #     user_name = input('请输入用户名：').strip()
-    # pwd = input('请输入密码：').strip()
-    # while pwd == '':
-    #     pwd = input('请输入密码：').strip()
+    user_name = input('请输入用户名：').strip()
+    while user_name == '':
+        user_name = input('请输入用户名：').strip()
+    pwd = input('请输入密码：').strip()
+    while pwd == '':
+        pwd = input('请输入密码：').strip()
+
     # headless = input('headless：').strip()
     # while headless == '':
     #     headless = input('headless：').strip()
 
-    user_name = '13875271978'
-    pwd = 'lql271978'
+    # user_name = '13875271978'
+    # pwd = 'lql271978'
+    # users = [{"name":"18674617528","pwd":"dxy617528"},
+    #          {"name":"18674617528","pwd":"dxy617528"},
+    #          {"name":"18674617528","pwd":"dxy617528"},
+    #          {"name":"18674617528","pwd":"dxy617528"},
+    #          {"name":"18674617528","pwd":"dxy617528"},
+    #          {"name":"18674617528","pwd":"dxy617528"}]
     headless = 'y'
-    # endregion
     _kaifang = KaiFangDaXue(user_name, pwd, '16', headless)
     _kaifang.login()
     _kaifang.play_video()
+    # endregion
+    # for user in users:
+    #     _kaifang = KaiFangDaXue(user['name'], user['pwd'], '16', headless)
+    #     _kaifang.login()
+    #     _kaifang.play_video()
 
 # endregion
