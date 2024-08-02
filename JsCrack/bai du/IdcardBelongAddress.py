@@ -1,6 +1,5 @@
-import json
 import time
-
+import os
 import execjs
 import requests
 import random
@@ -22,44 +21,60 @@ user_agents = [
     'Mozilla/5.0 (iPhone; CPU iPhone OS 12_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.1.2 Mobile/15E148 Safari/604.1'
 ]
 
-url = 'https://gwgp-3hmyv5v7mbb.i.bdcloudapi.com/idquery'
 
+class IdcardInfo:
+    def __init__(self, idcards):
+        self.idcards = idcards
+        self.timestamp = self.get_timestamp()
+        self.url = 'https://gwgp-3hmyv5v7mbb.i.bdcloudapi.com/idquery'
 
-def get_headers():
-    return {
-        'User-Agent': random.choice(user_agents),
-        'Content-type': 'application/json;charset=UTF-8',
-        'Accept': 'application/json, text/plain, */*',
-        'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8',
-        'Connection': 'keep-alive',
-    }
+    def get_headers(self):
+        return {
+            'User-Agent': random.choice(user_agents),
+            'host': 'gwgp-3hmyv5v7mbb.i.bdcloudapi.com',
+            'origin': 'https://www.baidu.com',
+            'Content-type': 'application/json;charset=UTF-8',
+            'Accept': 'application/json, text/plain, */*',
+            'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8',
+            'Connection': 'keep-alive',
+        }
 
+    def get_timestamp(self):
+        js = execjs.compile(open('jsParams.js', encoding='utf-8').read())
+        return js.call('entry')
 
-def get_timestamp():
-    js = execjs.compile(open('jsParams.js', encoding='utf-8').read())
-    return js.call('entry')
+    def get_idcard_info(self, jsonData):
+        print(self.timestamp)
+        heads = self.get_headers()
+        heads['Timestamp'] = self.timestamp
+        res = requests.post(self.url, headers=heads, json=jsonData).json()
+        return res
 
+    def post_idcard(self):
+        str_json = []
+        for idcard in self.idcards.split(','):
+            jsonData = {}
+            jsonData["idNumber"] = idcard
+            idcard_info = self.get_idcard_info(jsonData)
+            hj = f'{idcard_info["province"]}{idcard_info["city"]}{idcard_info["county"]}'
+            str_json.append(
+                f"update t_xuexi_reg set hjaddress='{hj}' where idcard='{idcard}';")
+            time.sleep(0.5)
+        return str_json
 
-def get_idcard_info(jsonData):
-    timestamp = get_timestamp()
-    print(timestamp)
-    heads = get_headers()
-    heads['Timestamp'] = timestamp
-    res = requests.post(url, headers=heads, json=jsonData).json()
-    return res
+    def write_text(self):
+        file_name = "test.sql"
+        sqls = self.post_idcard()
+        if os.path.exists(file_name):
+            os.remove(file_name)
 
-
-def post_idcard(idcards):
-    str_json = []
-    for idcard in idcards.split(','):
-        jsonData = {}
-        jsonData["idNumber"] = idcard
-        idcard_info = get_idcard_info(jsonData)
-        str_json.append(f'{idcard}:{idcard_info["province"]}{idcard_info["city"]}{idcard_info["county"]}')
-        time.sleep(1)
-    return str_json
+        with open(file_name, 'w') as f:
+            for sql in sqls:
+                f.write(sql + '\n')
 
 
 if __name__ == '__main__':
     ids = input('please input idcards：')
-    print(post_idcard(ids))
+    info = IdcardInfo(ids)
+    info.write_text()
+    print('done!')
