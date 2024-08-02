@@ -58,30 +58,35 @@ def get_time():
 # endregion
 
 # region 命令行输入方式
-idcard = input('请输入身份证：').strip()
+# idcard = input('请输入身份证：').strip()
+idcard = '430111198303112140'
 while idcard == '':
     print('身份证不能为空！')
     idcard = input('请输入身份证：').strip()
 
-user_name = input('请输入用户名：').strip()
+# user_name = input('请输入用户名：').strip()
+user_name = '黄芳'
 while user_name == '':
     print('用户名不能为空！')
     user_name = input('请输入用户名：').strip()
-pwd = input('请输入密码：').strip()
+# pwd = input('请输入密码：').strip()
+pwd = '111111'
 while pwd == '':
     print('密码不能为空！')
     pwd = input('请输入密码：').strip()
 # endregion
 
-# options = webdriver.ChromeOptions()
+options = webdriver.ChromeOptions()
 # options.add_argument('headless')
-# options.add_argument('window-size=1920x1080')
-
-# options.add_experimental_option("detach", True)
-
+options.add_argument("--incognito")  # 启动Chrome的无痕模式
+options.add_argument('window-size=1920x1080')
+options.add_argument('--disable-blink-features=AutomationControlled') #屏蔽检测
+options.add_experimental_option("detach", True)
 # 获取driver对象, 并将配置好的option传入进去
-# driver = webdriver.Chrome(options=options)
-driver = webdriver.Chrome()
+driver = webdriver.Chrome(options=options)
+
+# driver = webdriver.Chrome()
+
 driver.get('http://user.hnjsrcw.com/Space/Login.aspx')
 
 
@@ -96,12 +101,17 @@ def getObjectByXpath(path):
 iframe = None
 result = None
 
+
 def switch_page_iframe(ifrName, index):
-    # 切换到新窗口
-    driver.switch_to.window(driver.window_handles[index])
-    # 切换到iframe
-    iframe = getObjectById(ifrName)
-    driver.switch_to.frame(iframe)
+    try:
+        # 切换到新窗口
+        driver.switch_to.window(driver.window_handles[index])
+        # 切换到iframe
+        iframe = getObjectById(ifrName)
+        driver.switch_to.frame(iframe)
+    except Exception as ex:
+        logging.error("course_list函数报错：", ex)
+        ctypes.windll.user32.MessageBoxW(None, ex, '错误', MB_OK)
 
 
 def login():
@@ -122,14 +132,18 @@ def login():
     logging.info('%s 进入二维码页面' % get_time())
     iframe = getObjectById('eduMainFrame')
     driver.switch_to.frame(iframe)  # 切换到页面iframe里面去后去元素
+
+    # region show QRcode
     qrCode = getObjectById('ImageWxLogin')
     qrCode.screenshot(r'D:\test.png')
     image = Image.open(r'D:\test.png')
     image.show()
     time.sleep(5)
     image.close()
+    # endregion
+
     # 创建WebDriverWait实例，等待最多10秒
-    wait = WebDriverWait(driver, 30)
+    wait = WebDriverWait(driver, 300)
     # 等待直到元素可见
     entry = wait.until(EC.element_to_be_clickable((By.ID, 'hlTrainLink')))
     entry.click()
@@ -153,11 +167,12 @@ def course_list():
     logging.info('%s 进入课程页面' % get_time())
     table = getObjectById('gvClassCourseList')
     trs = table.find_elements(By.TAG_NAME, 'tr')
+    print('课程列表行数：%s' % len(trs))
     if len(trs) > 2:
         try:
             for i in range(2, len(trs)):
                 # 使用XPath获取所需的元素 /html/body/form/div[6]/div/table/tbody/tr[2]/td[6]/div/span
-                try: #/html/body/form/div[6]/div/table/tbody/tr[3]/td[6]/div/span
+                try:  # /html/body/form/div[6]/div/table/tbody/tr[2]/td[6]/div/span
                     ratio = getObjectByXpath("//table[@id='gvClassCourseList']//tr[" + str(i) + "]/td[6]/div/span")
                     curose_txt = getObjectByXpath("//table[@id='gvClassCourseList']//tr[" + str(i) + "]/td[4]")
                 except Exception as ex:
@@ -168,18 +183,20 @@ def course_list():
                     curose_txt = getObjectByXpath("//table[@id='gvClassCourseList']//tr[" + str(i) + "]/td[4]")
 
                 text = '{}:{}'
-                text.format(curose_txt, ratio.text)
+                text = text.format(curose_txt.text, ratio.text)
+                print(text)
                 # 获取第三个元素的文本值
                 if ratio.text != '100%':  # /html/body/form/div[6]/div/table/tbody/tr[4]/td[3]/div[1]/a
                     try:
                         studySubject = getObjectByXpath(
-                            "//table[@id='gvClassCourseList']//tr[" + str(i) + "]/td[3]/div[1]/a")
+                            "//table[@id='gvClassCourseList']//tr[" + str(i) + "]/td[3]/div[2]/div[1]/a[1]")
                     except Exception as ex:
                         logging.error("课程列表获取进度报错：", ex)
                         driver.refresh()
                         switch_page_iframe('eduMainFrame', 1)
-                        studySubject = getObjectByXpath(
-                            "//table[@id='gvClassCourseList']//tr[" + str(i) + "]/td[3]/div[1]/a")
+                        studySubject = getObjectByXpath('//*[@id="divEY"]/a[1]')
+                        # studySubject = getObjectByXpath(
+                        #     "//table[@id='gvClassCourseList']//tr[" + str(i) + "]/td[3]/div[1]/a")
 
                     driver.execute_script("arguments[0].setAttribute('target', '_blank')", studySubject)
                     studySubject.click()
@@ -201,11 +218,19 @@ def chapter_list():
     try:
         print('%s 进入第几讲列表页面' % get_time())
         print('%s 刷新列表' % get_time())
-        getObjectById('LinkButton1').click()  # 刷新列表
+
+        # 创建WebDriverWait实例，等待最多10秒
+        wait = WebDriverWait(driver, 300)
+        # 等待直到元素可见
+        link_button = wait.until(EC.element_to_be_clickable((By.ID, 'LinkButton1')))
+        if link_button != None:
+            link_button.click()  # 刷新列表
         tableZhangjie = getObjectById("DataList1")
         tds = tableZhangjie.find_elements(By.TAG_NAME, 'td')  # 找到某一讲没有学完的
         for td in tds:
+            print("课程课时：", td.text)
             elemA = td.find_element(By.TAG_NAME, "a")
+            print(elemA.get_attribute('href'), elemA.get_attribute('class'))
             if td.text != '' and elemA.get_attribute('class') != 'WLinkW':  # 未完成
                 print(elemA.text)
                 elemA.click()
@@ -222,10 +247,11 @@ def curriculum_play():
         play_m = driver.find_element(By.TAG_NAME, 'video')
 
         video_src = play_m.get_attribute('src')
+        print('video_src：', video_src)
         while video_src is None or video_src == '':
             driver.refresh()
             switch_page_iframe('MediaAutoFrame', 3)
-            time.sleep(2)
+            time.sleep(5)
             play_m = driver.find_element(By.TAG_NAME, 'video')
             video_src = play_m.get_attribute('src')
         play_m.click()
@@ -240,19 +266,23 @@ def curriculum_play():
         # total_duration = driver.execute_script("return arguments[0][0].duration;", play_m)
         total_duration = play_m.get_attribute('duration')
         print('total_duration：%s' % total_duration)
-        if current_time == total_duration:
+        # if current_time != total_duration:
+        #     play_m.click()
+        #     current_time, total_duration = retry_get_time(current_time, play_m, total_duration)
+        # else:
+        while current_time == 'NaN' or total_duration == 'NaN':
+            print('当前时间或者总时间未获取到！')
+            play_m = video_page_refresh(play_m)
             play_m.click()
             current_time, total_duration = retry_get_time(current_time, play_m, total_duration)
-        else:
-            while current_time == 'NaN' or total_duration == 'NaN':
-                play_m = video_page_refresh(play_m)
-                play_m.click()
-                current_time, total_duration = retry_get_time(current_time, play_m, total_duration)
 
-        while current_time == total_duration:
-            play_m.click()
+        while current_time < total_duration:
+            is_paused = driver.execute_script("return arguments[0].paused;", play_m)  # 判断视频是否被暂停
+            if is_paused:
+                play_m.click()
+            time.sleep(5)
             current_time, total_duration = retry_get_time(current_time, play_m, total_duration)
-            if current_time == total_duration:
+            if current_time != total_duration:
                 play_m = video_page_refresh(play_m)
                 play_m.click()
                 current_time, total_duration = retry_get_time(current_time, play_m, total_duration)
@@ -297,9 +327,7 @@ def video_page_refresh(play_m):
 def retry_get_time(current_time, play_m, total_duration):
     try:
         current_time = play_m.get_attribute('currentTime')
-        print('重新获取current_time：%s' % current_time)
         total_duration = play_m.get_attribute('duration')
-        print('重新获取total_duration：%s' % total_duration)
         return current_time, total_duration
     except Exception as ex:
         logging.error("retry_get_time函数报错：", ex)
