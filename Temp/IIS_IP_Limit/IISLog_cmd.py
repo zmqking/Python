@@ -1,7 +1,6 @@
 import pandas as pd
 import os
 import time
-import schedule
 from aliyun_security import Sample as sec
 
 
@@ -60,8 +59,7 @@ def find_latest_log(log_files, directory):
 
 def get_new_log():
     # 指定要搜索的目录
-    log_directory = 'C:/inetpub/logs/LogFiles/W3SVC12'  # 使用当前目录作为示例
-    # log_directory = 'D:/Temp Files'  # 使用当前目录作为示例
+    log_directory = 'D:/Temp Files'  # 使用当前目录作为示例
     # 获取所有日志文件
     log_files = get_log_files(log_directory)
     # 过滤大于2MB的日志文件
@@ -93,11 +91,4 @@ def add_ip_limit():
 
 
 if __name__ == '__main__':
-    # add_ip_limit()
-    #
-    schedule.every(10).minutes.do(add_ip_limit)
-    print('start application...')
-    while True:
-        # monitor.job()
-        schedule.run_pending()
-        time.sleep(1)
+    add_ip_limit()
