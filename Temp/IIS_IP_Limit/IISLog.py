@@ -1,6 +1,7 @@
 import pandas as pd
 import os
 import time
+import schedule
 from aliyun_security import Sample as sec
 
 def get_max_ips(path) -> []:
@@ -13,7 +14,7 @@ def get_max_ips(path) -> []:
                      engine='python')
 
     ip_counts = df['c-ip'].value_counts()
-    frequent_ips = ip_counts[ip_counts > 300]
+    frequent_ips = ip_counts[ip_counts > 350]
     for ip,count  in frequent_ips.items():
         print(f"最频繁的IP地址:{ip} {count}")
 
@@ -28,7 +29,7 @@ def get_max_ips(path) -> []:
     # print(df['sc-status'].value_counts())
     # # 平均响应时间
     # print(f"\n平均响应时间: {df['time-taken'].mean():.2f} ms")
-    return ip_counts
+    return frequent_ips
 
 
 
@@ -74,16 +75,27 @@ def get_new_log():
     #     print("没有找到大于2MB的日志文件")
 
 
-
-if __name__ == '__main__':
+def add_ip_limit():
     log_path = get_new_log()
     log_ips = get_max_ips(log_path)
-    for ip,count in log_ips.items():
+    for ip, count in log_ips.items():
         time.sleep(1)
+        print(ip)
         sec.main(['cn-hangzhou',
-                     'sg-bp18qji31i7341eph4nq',
-                     '80/443',
-                     'drop',
-                     'intranet',
-                     '1',
-                     ip])
+                  'sg-bp18qji31i7341eph4nq',
+                  '80/443',
+                  'drop',
+                  'intranet',
+                  '1',
+                  ip])
+
+
+if __name__ == '__main__':
+    add_ip_limit()
+
+    # schedule.every(10).minutes.do(add_ip_limit())
+    # print('start application...')
+    # while True:
+    #     # monitor.job()
+    #     schedule.run_pending()
+    #     time.sleep(1)

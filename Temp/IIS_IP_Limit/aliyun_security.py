@@ -21,7 +21,6 @@ class Sample:
             region_id: str,
     ) -> ECSClient:
         config = open_api_models.Config()
-        print(os.environ['ALIBABA_CLOUD_ACCESS_KEY_ID'])
         # 您的AccessKey ID
         config.access_key_id = os.environ['ALIBABA_CLOUD_ACCESS_KEY_ID']
         # 您的AccessKey Secret
@@ -207,11 +206,11 @@ class Sample:
             ConsoleClient.log(f'   创建时间： {permission.create_time};')
 
 
-if __name__ == '__main__':
-    Sample.main(['cn-hangzhou',
-                 'sg-bp18qji31i7341eph4nq',
-                 '80/443',
-                 'drop',
-                 'intranet',
-                 '1',
-                 '192.168.1.13'])
+# if __name__ == '__main__':
+#     Sample.main(['cn-hangzhou',
+#                  'sg-bp18qji31i7341eph4nq',
+#                  '80/443',
+#                  'drop',
+#                  'intranet',
+#                  '1',
+#                  '192.168.1.13'])
