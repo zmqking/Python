@@ -4,6 +4,11 @@ import time
 import schedule
 from aliyun_security import Sample as sec
 
+# 指定要搜索的目录
+log_directory = 'C:/inetpub/logs/LogFiles/W3SVC12'  # 使用当前目录作为示例
+
+
+# log_directory = 'D:/Temp Files'  # 使用当前目录作为示例
 
 def get_max_ips(path) -> []:
     # 定义日志字段名称
@@ -59,8 +64,6 @@ def find_latest_log(log_files, directory):
 
 
 def get_new_log():
-    # 指定要搜索的目录
-    log_directory = 'C:/inetpub/logs/LogFiles/W3SVC12'  # 使用当前目录作为示例
     # log_directory = 'D:/Temp Files'  # 使用当前目录作为示例
     # 获取所有日志文件
     log_files = get_log_files(log_directory)
@@ -69,35 +72,43 @@ def get_new_log():
     large_logs = filter_large_logs(log_files, log_directory, size_limit)
     # 在大文件中找到最新的日志文件
     latest_large_log = find_latest_log(large_logs, log_directory)
-    return f"{log_directory}/{latest_large_log}"
+    return latest_large_log
     # if latest_large_log:
     #     print(f"最新的大于2MB的日志文件是: {log_directory}/{latest_large_log}")
     # else:
     #     print("没有找到大于2MB的日志文件")
 
 
+def get_current_time():
+    return time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+
+
 def add_ip_limit():
-    log_path = get_new_log()
-    print(f"log_path：{log_path}")
+    log_name = get_new_log()
+    log_path = f"{log_directory}/{log_name}"
+    print(f"{get_current_time()} log_path：{log_path}")
     log_ips = get_max_ips(log_path)
     for ip, count in log_ips.items():
         time.sleep(1)
-        print(ip)
+        print(f'{get_current_time()} {ip}')
+        description = f'{log_name} {count}'
         sec.main(['cn-hangzhou',
                   'sg-bp18qji31i7341eph4nq',
                   '80/443',
                   'drop',
                   'intranet',
                   '1',
-                  ip])
+                  ip, description])
 
 
 if __name__ == '__main__':
-    # add_ip_limit()
-    #
-    schedule.every(10).minutes.do(add_ip_limit)
+    flag = True
+    if flag:
+        flag = False
+        add_ip_limit()
+
+    schedule.every(6).minutes.do(add_ip_limit)
     print('start application...')
     while True:
-        # monitor.job()
         schedule.run_pending()
         time.sleep(1)

@@ -10,6 +10,7 @@ from alibabacloud_tea_openapi import models as open_api_models
 from alibabacloud_darabonba_env.client import Client as EnvClient
 from alibabacloud_ecs20140526 import models as ecs_models
 from alibabacloud_tea_console.client import Client as ConsoleClient
+import time
 
 
 class Sample:
@@ -65,8 +66,10 @@ class Sample:
             policy: str,
             proiority: str,
             source_cidr_ip: str,
+            description: str
     ) -> None:
         req = ecs_models.AuthorizeSecurityGroupRequest()
+        req.description = description
         # 目标安全组地域ID。
         req.region_id = region_id
         # 目标安全组ID。
@@ -98,7 +101,7 @@ class Sample:
         req.source_cidr_ip = source_cidr_ip
         try:
             client.authorize_security_group(req)
-            ConsoleClient.log('--------------------入方向安全组新增成功--------------------')
+            # ConsoleClient.log('--------------------入方向安全组新增成功--------------------')
         except Exception as error:
             ConsoleClient.log(error.message)
 
@@ -143,9 +146,12 @@ class Sample:
         req.source_cidr_ip = '192.168.1.3'
         try:
             await client.authorize_security_group_async(req)
-            ConsoleClient.log('--------------------入方向安全组新增成功--------------------')
+            # ConsoleClient.log('--------------------入方向安全组新增成功--------------------')
         except Exception as error:
             ConsoleClient.log(error.message)
+
+    def get_date_time(self):
+        return time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 
     @staticmethod
     def main(
@@ -159,22 +165,31 @@ class Sample:
         policy = args[4]
         proiority = args[5]
         source_cidr_ip = args[6]
+        description = args[7]
         # 修改安全组入方向规则
         Sample.authorize_security_group(client, group_id, region_id, port_range, policy, nic_type, proiority,
-                                        source_cidr_ip)
+                                        source_cidr_ip, description)
         # 查询安全组的详情
         security_group_res = Sample.describe_security_group_attribute(client, group_id, region_id)
         detail = security_group_res.body
-        ConsoleClient.log(f' 安全组 {detail.security_group_name}({detail.security_group_id}) 规则如下：')
-        for permission in detail.permissions.permission:
-            ConsoleClient.log(f'   规则描述： {permission.description};')
-            ConsoleClient.log(f'   方向： {permission.direction};')
-            ConsoleClient.log(f'   端口范围： {permission.source_port_range};')
-            ConsoleClient.log(f'   源端IPv4 CIDR地址段： {permission.source_cidr_ip};')
-            ConsoleClient.log(f'   网卡类型： {permission.nic_type};')
-            ConsoleClient.log(f'   访问权限： {permission.policy};')
-            ConsoleClient.log(f'   规则优先级： {permission.priority};')
-            ConsoleClient.log(f'   创建时间： {permission.create_time};')
+        curr_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+        if len(detail.permissions.permission) > 0:
+            ConsoleClient.log(
+                f'{curr_time} 安全组 {detail.security_group_name}({detail.security_group_id}) 入组规则添加成功：')
+        else:
+            ConsoleClient.log(
+                f'{curr_time} 安全组 {detail.security_group_name}({detail.security_group_id}) 入组规则添加失败！')
+
+        # ConsoleClient.log(f' 安全组 {detail.security_group_name}({detail.security_group_id}) 规则如下：')
+        # for permission in detail.permissions.permission:
+        #     ConsoleClient.log(f'   规则描述： {permission.description};')
+        #     ConsoleClient.log(f'   方向： {permission.direction};')
+        #     ConsoleClient.log(f'   端口范围： {permission.source_port_range};')
+        #     ConsoleClient.log(f'   源端IPv4 CIDR地址段： {permission.source_cidr_ip};')
+        #     ConsoleClient.log(f'   网卡类型： {permission.nic_type};')
+        #     ConsoleClient.log(f'   访问权限： {permission.policy};')
+        #     ConsoleClient.log(f'   规则优先级： {permission.priority};')
+        #     ConsoleClient.log(f'   创建时间： {permission.create_time};')
 
     @staticmethod
     async def main_async(
@@ -204,7 +219,6 @@ class Sample:
             ConsoleClient.log(f'   访问权限： {permission.policy};')
             ConsoleClient.log(f'   规则优先级： {permission.priority};')
             ConsoleClient.log(f'   创建时间： {permission.create_time};')
-
 
 # if __name__ == '__main__':
 #     Sample.main(['cn-hangzhou',

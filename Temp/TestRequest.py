@@ -3,25 +3,46 @@
 # Author:king
 # Date:1/3/2024
 
-import requests
+# import  time
+# import pandas as pd
+# import re
+
+
+# 获取当前时间并格式化
+# formatted_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+# print(formatted_time)
+
+
+import pandas as pd
+import re
 import os
-import math
 import time
-import random
-url = 'http://cdn3.hnjsrcw.com/zctrain/2023101/1.mp4'
-COMMENTS = ['很好', '非常棒', '视频质量不错', '学到了东西', '深有体会']
 
-def create_dir():
-    # 找到倒数第二个斜杠的位置
-    last_slash_index = url.rfind('/')
-    # 从后向前找到倒数第二个斜杠，需要先找到最后一个斜杠的位置
-    if last_slash_index != -1:
-        # 从倒数第一个斜杠向前数，直到找到倒数第二个斜杠
-        second_last_slash_index = url.rfind('/', 0, last_slash_index)
-    return url[second_last_slash_index + 1:last_slash_index], url[last_slash_index + 1:]
+def extract_time(log_line):
+    match = re.search(r'(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})', log_line)
+    return match.group(1) if match else None
 
 
-print(random.choice(COMMENTS))
-# dir, fileName = create_dir()
-# print(dir, fileName)
-# print(time.time())
+# 读取IIS日志文件
+log_file_path = 'D:/Temp Files/u_extend50112.log'  # 替换为您的日志文件路径
+start = time.time()
+if os.path.exists(log_file_path):
+    print(start)
+    # 读取文件，跳过以 '#' 开头的行
+    with open(log_file_path, 'r',encoding='utf8') as file:
+        logs = [line.strip() for line in file if not line.startswith('#') and line.strip()]
+
+    # 提取时间
+    timestamps = [extract_time(log) for log in logs]
+    timestamps = [pd.to_datetime(ts) for ts in timestamps if ts]
+
+    if timestamps:
+        earliest_time = min(timestamps)
+        latest_time = max(timestamps)
+        print(f'最早的时间: {earliest_time}')
+        print(f'最晚的时间: {latest_time}')
+        print(f'success:{time.time()-start}')
+    else:
+        print('日志文件中没有有效的时间戳。')
+else:
+    print(f'错误：文件 "{log_file_path}" 不存在。')
