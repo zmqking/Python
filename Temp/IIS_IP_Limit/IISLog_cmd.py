@@ -2,6 +2,8 @@ import pandas as pd
 import os
 import time
 from aliyun_security import Sample as sec
+from IISLog import  get_ip_addr as getIP
+# import sys
 
 # 指定要搜索的目录
 log_directory = 'D:/Temp Files'  # 使用当前目录作为示例
@@ -85,18 +87,20 @@ def add_ip_limit():
     print(f"{get_current_time()} log_path：{log_path}")
     log_ips = get_max_ips(log_path)
     for ip, count in log_ips.items():
+        ip_addr = getIP(ip)
         time.sleep(1)
-        print(f'{get_current_time()} {ip}')
-        description = f'{log_name} {count}'
+        print(f'{get_current_time()} {ip} {ip_addr}')
+        description = f'{log_name} {count} {ip_addr}'
         sec.main(['cn-hangzhou',
                   'sg-bp18qji31i7341eph4nq',
                   '80/443',
                   'drop',
                   'intranet',
                   '1',
-                  '192.168.1.12',description])
-                  # ip, description])
+                  # '116.162.1.155',description])
+                  ip, description])
 
 
 if __name__ == '__main__':
     add_ip_limit()
+    # sys.exit(0)

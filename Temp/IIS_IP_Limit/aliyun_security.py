@@ -157,28 +157,31 @@ class Sample:
     def main(
             args: List[str],
     ) -> None:
-        region_id = args[0]
-        client = Sample.initialization(region_id)
-        group_id = args[1]
-        port_range = args[2]
-        nic_type = args[3]
-        policy = args[4]
-        proiority = args[5]
-        source_cidr_ip = args[6]
-        description = args[7]
-        # 修改安全组入方向规则
-        Sample.authorize_security_group(client, group_id, region_id, port_range, policy, nic_type, proiority,
-                                        source_cidr_ip, description)
-        # 查询安全组的详情
-        security_group_res = Sample.describe_security_group_attribute(client, group_id, region_id)
-        detail = security_group_res.body
-        curr_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-        if len(detail.permissions.permission) > 0:
-            ConsoleClient.log(
-                f'{curr_time} 安全组 {detail.security_group_name}({detail.security_group_id}) 入组规则添加成功：')
-        else:
-            ConsoleClient.log(
-                f'{curr_time} 安全组 {detail.security_group_name}({detail.security_group_id}) 入组规则添加失败！')
+        try:
+            region_id = args[0]
+            client = Sample.initialization(region_id)
+            group_id = args[1]
+            port_range = args[2]
+            nic_type = args[3]
+            policy = args[4]
+            proiority = args[5]
+            source_cidr_ip = args[6]
+            description = args[7]
+            # 修改安全组入方向规则
+            Sample.authorize_security_group(client, group_id, region_id, port_range, policy, nic_type, proiority,
+                                            source_cidr_ip, description)
+            # 查询安全组的详情
+            security_group_res = Sample.describe_security_group_attribute(client, group_id, region_id)
+            detail = security_group_res.body
+            curr_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+            if len(detail.permissions.permission) > 0:
+                ConsoleClient.log(
+                    f'{curr_time} 安全组 {detail.security_group_name}({detail.security_group_id}) 入组规则添加成功：')
+            else:
+                ConsoleClient.log(
+                    f'{curr_time} 安全组 {detail.security_group_name}({detail.security_group_id}) 入组规则添加失败！')
+        except Exception as ex:
+            ConsoleClient.error(ex)
 
         # ConsoleClient.log(f' 安全组 {detail.security_group_name}({detail.security_group_id}) 规则如下：')
         # for permission in detail.permissions.permission:
