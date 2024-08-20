@@ -1,0 +1,4 @@
+
+mpython:S11920"VDefine a constant instead of duplicating this literal 'http://127.0.0.1:7890' 3 times.(‘Â‡i
+;python:S125"Remove this commented out code.(Ò’€­ùÿÿÿÿ
+kpython:S117­"SRename this parameter "imgUrls" to match the regular expression ^[_a-z][a-z0-9_]*$.(•ÕÇû

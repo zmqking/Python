@@ -1,0 +1,4 @@
+
+kpython:S1542"NRename function "excuteDB" to match the regular expression ^[a-z_][a-z0-9_]*$.(ñì¢ÿÿÿÿÿ
+Cpython:S5806"+Rename this variable; it shadows a builtin.(â“ÉŠ
+Hpython:S5806"+Rename this variable; it shadows a builtin.(æ·¾¦úÿÿÿÿ

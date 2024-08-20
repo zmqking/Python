@@ -1,0 +1,6 @@
+
+5python:S125"Remove this commented out code.(×¬£*
+fpython:S100"ORename method "getJsonData" to match the regular expression ^[a-z_][a-z0-9_]*$.(Å §ÿ
+Hpython:S5806"+Rename this variable; it shadows a builtin.(¬‰§øÿÿÿÿ
+lpython:S100"PRename method "downloadImgs" to match the regular expression ^[a-z_][a-z0-9_]*$.(Â‰Ú‡ıÿÿÿÿ
+lpython:S100$"PRename method "writeImgFile" to match the regular expression ^[a-z_][a-z0-9_]*$.(¡¬øÛùÿÿÿÿ

@@ -1,0 +1,34 @@
+
+§python:S1192˜"\Define a constant instead of duplicating this literal "return arguments[0].paused;" 3 times.(¡œ‹ëşÿÿÿÿ8€Ìè‡2J$fdbb2ff5-7daf-4e23-b01e-d3a81e7e2e19
+«python:S1192°"fDefine a constant instead of duplicating this literal "//table[@id='gvClassCourseList']//tr[" 5 times.(ğ˜á28‘€Ìè‡2J$8af0e28e-e222-4a19-a3c8-37120bd88794
+cpython:S1250"Remove this commented out code.(¼¾ò‰8‘€Ìè‡2J$8168ba1f-14de-4557-8137-e5016c47d148
+cpython:S125C"Remove this commented out code.(ÄûÙ…8‘€Ìè‡2J$8f96f31b-84bb-437b-8738-43c5fb5db708
+hpython:S125H"Remove this commented out code.(™°Ğöúÿÿÿÿ8‘€Ìè‡2J$1da878d1-8c8c-40b3-94ee-8fb6165c7b21
+cpython:S125X"Remove this commented out code.(÷•ÔÊ8’€Ìè‡2J$c8189b2e-2ef0-4527-8178-dbd833a024c2
+—python:S1542]"SRename function "getObjectById" to match the regular expression ^[a-z_][a-z0-9_]*$.(¡ñç"8’€Ìè‡2J$00806b07-50ea-41a1-a487-233fdd446613
+›python:S1542a"VRename function "getObjectByXpath" to match the regular expression ^[a-z_][a-z0-9_]*$.(˜ášƒ8’€Ìè‡2J$0e917997-e82d-4c83-8e4c-d65fd081133f
+—python:S117i"SRename this parameter "ifrName" to match the regular expression ^[_a-z][a-z0-9_]*$.(’‡ô¢8“€Ìè‡2J$e49c950b-f021-4ea1-8528-b8d15958ac08
+epython:S3457q" Remove 1 unexpected argument(s).(ˆ¿µ8”€Ìè‡2J$450b3e7c-1961-498c-8050-8e2e0f66f9d3
+¥python:S117š"[Rename this local variable "entryTrain" to match the regular expression ^[_a-z][a-z0-9_]*$.(×¤¿ßÿÿÿÿÿ8”€Ìè‡2J$f496914c-671e-4a26-9b9d-d9e2a24473eb
+¡python:S117‰"WRename this local variable "qrCode" to match the regular expression ^[_a-z][a-z0-9_]*$.(ìàœ¼şÿÿÿÿ8”€Ìè‡2J$980e8e10-1905-4d4c-a287-4e334ba5ffe8
+¢python:S117¿"]Rename this local variable "studySubject" to match the regular expression ^[_a-z][a-z0-9_]*$.(…¸—Š8”€Ìè‡2J$2827b666-7121-4ab0-885a-5156bbb9da32
+upython:S1481Ô"*Remove the unused local variable "result".(ÈÜ’Şøÿÿÿÿ8”€Ìè‡2J$6272fd65-82d1-4875-b086-021fd24d094c
+fpython:S3457³" Remove 1 unexpected argument(s).(ÇõŞÊ8•€Ìè‡2J$b400a765-5039-458d-a2bd-9b5c7ccf8da7
+kpython:S3457Â" Remove 1 unexpected argument(s).(‘”ó¢ÿÿÿÿÿ8•€Ìè‡2J$934241f0-03a5-4e7d-9dcb-aec9d1f555ed
+dpython:S125Æ"Remove this commented out code.(¨ª­é8•€Ìè‡2J$3a83c78f-c8bb-4c84-8b96-68b77d39effd
+fpython:S3457Ó" Remove 1 unexpected argument(s).(ˆ¿µ8•€Ìè‡2J$90aa6683-a1cf-433c-b801-26f4a60614be
+›python:S117è"VRename this local variable "elemA" to match the regular expression ^[_a-z][a-z0-9_]*$.(À ¯’8•€Ìè‡2J$29adb76d-e083-4cf0-b013-bb4257ede688
+£python:S117ä"^Rename this local variable "tableZhangjie" to match the regular expression ^[_a-z][a-z0-9_]*$.(ş·àÁ8•€Ìè‡2J$a0245057-890a-43d4-afe8-a8c1d43d33ca
+upython:S1481ğ"*Remove the unused local variable "result".(ÈÜ’Şøÿÿÿÿ8•€Ìè‡2J$bb6f2c01-7f27-4535-a579-422fc9e4f5b0
+kpython:S3457ï" Remove 1 unexpected argument(s).(ı¯Ùşÿÿÿÿ8•€Ìè‡2J$796b6e10-04e8-4bd7-9266-1f3f0444945f
+›python:S117µ"VRename this local variable "strEx" to match the regular expression ^[_a-z][a-z0-9_]*$.(ÅÑ‘è8•€Ìè‡2J$c3210b07-de1b-49ca-a527-918692672e2f
+ppython:S1481¸"*Remove the unused local variable "result".(™×¸8•€Ìè‡2J$93710a23-1255-4e30-be87-8acbd978eff1
+ipython:S125„"Remove this commented out code.(»Â­úúÿÿÿÿ8•€Ìè‡2J$457038a4-8335-42c7-9498-79a81dc1f841
+fpython:S3457¹" Remove 1 unexpected argument(s).(™¡ÏÆ8•€Ìè‡2J$04423103-446d-49a8-b14b-b5dcfcf1ba13
+upython:S1481Ä"*Remove the unused local variable "result".(ÈÜ’Şøÿÿÿÿ8•€Ìè‡2J$6bb64eae-d7a5-4ca3-bb75-69a701e863e4
+™python:S1226¼"NIntroduce a new variable or use its initial value before reassigning 'play_m'.(œâüàùÿÿÿÿ8–€Ìè‡2J$832d73dc-6146-40f6-8a39-37f98e17964d
+fpython:S3457Ã" Remove 1 unexpected argument(s).(ûö·8–€Ìè‡2J$dcf7fe9e-ffc9-414b-890e-171a8615009b
+upython:S1481Î"*Remove the unused local variable "result".(ÈÜ’Şøÿÿÿÿ8–€Ìè‡2J$0c4f05e4-0640-49ad-a5a2-ef4f4e29974d
+špython:S1226Ç"TIntroduce a new variable or use its initial value before reassigning 'current_time'.(Ù¬‘¡8–€Ìè‡2J$4d32bedc-397f-41bf-831e-16bcac8246b4
+œpython:S1226Ç"VIntroduce a new variable or use its initial value before reassigning 'total_duration'.(Ù¬‘¡8–€Ìè‡2J$53c51d25-1850-44e0-b932-539630bd24c7
+fpython:S3457Í" Remove 1 unexpected argument(s).(©÷Á¤8–€Ìè‡2J$596104a4-5b64-4841-bc17-3aa7d5d3c5da

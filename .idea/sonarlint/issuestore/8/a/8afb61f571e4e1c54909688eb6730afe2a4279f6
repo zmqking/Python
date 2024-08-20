@@ -1,0 +1,30 @@
+
+cpython:S125("Remove this commented out code.(¼¾ò‰8ÒÈóê†2J$38fff181-012a-4e64-a7cb-be5bcadaabdf
+hpython:S125D"Remove this commented out code.(îÄ¬Éùÿÿÿÿ8ÓÈóê†2J$d55f9994-c1f9-493e-97fb-b29ef050b171
+hpython:S125J"Remove this commented out code.(Š•Ÿ¾şÿÿÿÿ8ÓÈóê†2J$9a29004c-bce5-4a03-a7ea-cfadc5522886
+bpython:S125V"Remove this commented out code.(ÜË° 8ÓÈóê†2J$bc5d2113-58f5-4cb8-85d0-8bb6de2cd7ef
+—python:S1542]"SRename function "getObjectById" to match the regular expression ^[a-z_][a-z0-9_]*$.(¡ñç"8ÓÈóê†2J$c736e129-bfeb-43da-8655-7ab78233f97b
+›python:S1542a"VRename function "getObjectByXpath" to match the regular expression ^[a-z_][a-z0-9_]*$.(˜ášƒ8ÓÈóê†2J$d2fa3bb6-1178-4e5b-80f6-9cf61ecf5386
+python:S1542e"YRename function "getObjectById_await" to match the regular expression ^[a-z_][a-z0-9_]*$.(×Ô¶.8ÓÈóê†2J$d063bb68-89aa-47c8-8cac-c99ff917bfff
+—python:S117l"SRename this parameter "tagName" to match the regular expression ^[_a-z][a-z0-9_]*$.(ıÉ8ÔÈóê†2J$6741e164-4ff8-448e-923b-c8eb2fad05c4
+£python:S1542l"^Rename function "getObjectByTagName_await" to match the regular expression ^[a-z_][a-z0-9_]*$.(ıÉ8ÔÈóê†2J$7da90a0a-1b73-44ee-930c-34771f18ce13
+hpython:S125q"Remove this commented out code.(£óÈÁúÿÿÿÿ8ÔÈóê†2J$78127f03-fc47-40bb-b850-744b33fb546b
+¡python:S1542w"\Rename function "getObjectByXpath_await" to match the regular expression ^[a-z_][a-z0-9_]*$.(Ú‚Ë8ÔÈóê†2J$bae89eb3-c639-4865-a7f5-962e9e30ac14
+hpython:S125|"Remove this commented out code.(£óÈÁúÿÿÿÿ8ÔÈóê†2J$c472847b-9069-4ac4-8f6f-6edc8c0c7f82
+špython:S117‚"URename this parameter "className" to match the regular expression ^[_a-z][a-z0-9_]*$.(¤Áç8ÔÈóê†2J$88fcda09-170c-4e93-a929-df0c8498bf87
+¦python:S1542‚"`Rename function "getObjectByClassName_await" to match the regular expression ^[a-z_][a-z0-9_]*$.(¤Áç8ÔÈóê†2J$b9481845-6ae7-4449-9a9e-416a4718b6a1
+ipython:S125‡"Remove this commented out code.(£óÈÁúÿÿÿÿ8ÔÈóê†2J$afa7aaac-db0d-42bf-a043-20861dbb4701
+ python:S1542"ZRename function "getObjectByCss_await" to match the regular expression ^[a-z_][a-z0-9_]*$.(³øÂ’8ÔÈóê†2J$c2a462c4-d0b3-45c7-a31d-ce295e28f285
+ipython:S125’"Remove this commented out code.(ùá©ªúÿÿÿÿ8ÔÈóê†2J$32af5074-5113-45c6-8f16-d505d0c74e73
+ipython:S125˜"Remove this commented out code.(®áÇ‡şÿÿÿÿ8ÔÈóê†2J$d733bd16-7997-4bc6-8139-e1a4fe31ff6f
+dpython:S125œ"Remove this commented out code.(Ğ˜®À8ÔÈóê†2J$40b323c7-4160-407b-9907-01a66b16c6d0
+ipython:S125¥"Remove this commented out code.(ÙçŠ†şÿÿÿÿ8ÔÈóê†2J$2d31bfa6-b59f-4c43-a9af-2c78909d6a3f
+ipython:S125º"Remove this commented out code.(˜õ“òıÿÿÿÿ8ÔÈóê†2J$0ab32406-93a3-491e-9ecc-1804f5eef53f
+qpython:S1481Ù"&Remove the unused local variable "ex".(¾·¿‡üÿÿÿÿ8Ø­Üì†2J$8a2bf0af-3ea9-4506-ac4d-028baa23ff53
+špython:S3776Ğ"TRefactor this function to reduce its Cognitive Complexity from 25 to the 15 allowed.(‚Û‚Ÿ8ÕÈóê†2J$3c72edcf-a9a0-4fe8-9cab-e7c45b73a585
+‚python:S5754ƒ"<Specify an exception class to catch or reraise the exception(ˆÊÉ·8Ú­Üì†2J$0c612bf8-f3a9-42df-aa66-2de064dc938e
+ipython:S125‡"Remove this commented out code.(¢º¬Ÿÿÿÿÿÿ8ÕÈóê†2J$52d19c42-ce12-4e0e-be10-977e887f9650
+ipython:S125"Remove this commented out code.(†šéşÿÿÿÿ8ÕÈóê†2J$4045e7f9-0861-4956-999f-a3f412f9ecdd
+cpython:S125"Remove this commented out code.(Èœ·P8ÕÈóê†2J$6085d182-ec0f-4802-82ac-60e014c38473
+ipython:S125§"Remove this commented out code.(²˜Ğêÿÿÿÿÿ8ÕÈóê†2J$2ff80722-c999-4192-87c2-391ce8b955d8
+ipython:S125¬"Remove this commented out code.(™ŒÊüúÿÿÿÿ8ÕÈóê†2J$46344796-96a7-4475-8118-887f49acea03

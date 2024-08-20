@@ -1,0 +1,24 @@
+
+œpython:S1192m"YDefine a constant instead of duplicating this literal 'æ— çŸ¥é“äº†ç¡®è®¤æ¡†ï¼' 3 times.(·•ü²üÿÿÿÿJ$d91e3a6e-72d5-47c7-95e8-3e8a32c3802f
+Œpython:S116"ORename this field "Watched" to match the regular expression ^[_a-z][_a-z0-9]*$.(È™è“J$10410af6-79a2-4789-9b42-35eb25325c7b
+apython:S1259"Remove this commented out code.(Š•Ÿ¾şÿÿÿÿJ$9bf51ad3-e5dc-424e-ae47-4078776a3b3b
+python:S100K"QRename method "getObjectById" to match the regular expression ^[a-z_][a-z0-9_]*$.(–×ŞÕJ$50cd41a3-b635-48c3-b0eb-693cc6282f78
+‘python:S100N"TRename method "getObjectByXpath" to match the regular expression ^[a-z_][a-z0-9_]*$.(³ÕÒ¸J$4243dd62-e498-4356-9af4-3820b00511ab
+—python:S117Q"URename this parameter "className" to match the regular expression ^[_a-z][a-z0-9_]*$.(ü™¥ûüÿÿÿÿJ$0ae1f5ef-a697-4143-bffc-316daea8d39c
+špython:S100Q"XRename method "getObjectByClassName" to match the regular expression ^[a-z_][a-z0-9_]*$.(ü™¥ûüÿÿÿÿJ$7203c7c7-3cd3-4762-81fd-a85e40573aab
+œpython:S100T"ZRename method "getObjectByCssSelector" to match the regular expression ^[a-z_][a-z0-9_]*$.(¶§ÅÛüÿÿÿÿJ$b4289d4f-adb2-4b0c-b5b4-1a1537c97f0f
+apython:S125h"Remove this commented out code.(¼ë¿÷şÿÿÿÿJ$cc9e834a-799d-4fef-96a4-56f47644320c
+bpython:S125—"Remove this commented out code.(í´Ü¼úÿÿÿÿJ$bafdbdf2-a191-49fb-9f3b-50dfb4a372f4
+gpython:S1481¥"(Remove the unused local variable "flag".(À¸èËJ$5a290845-ec31-4f29-985f-8a2c97f473ce
+”python:S3776£"URefactor this function to reduce its Cognitive Complexity from 102 to the 15 allowed.(ÔŸİJ$418f9e23-719c-48ac-8df2-45450b1ca0b6
+bpython:S125³"Remove this commented out code.(ÈïöéşÿÿÿÿJ$025707e9-f206-4dea-80c8-0175ef536b43
+bpython:S125İ"Remove this commented out code.(ºµ¦÷ùÿÿÿÿJ$48dab6bc-0221-4b67-a6eb-850b45dc1a4d
+]python:S125‰"Remove this commented out code.(§ÿæJ$cacedca9-ce31-4b3d-8865-d14ee0addc3a
+bpython:S125 "Remove this commented out code.(“ãÆèùÿÿÿÿJ$3687d9f2-c471-44b5-b2a2-cf112a13de82
+bpython:S125¢"Remove this commented out code.(è‰”üûÿÿÿÿJ$2c232acd-6f8c-412d-943c-4d4e05979028
+bpython:S125½"Remove this commented out code.(²ÇÒûùÿÿÿÿJ$10e59ae2-6c90-4685-be92-fb51499d9690
+bpython:S125Ç"Remove this commented out code.(‘±ÃğûÿÿÿÿJ$f40775db-d3ff-478e-ab9c-91bf206cb493
+python:S100ş"PRename method "set_playRate" to match the regular expression ^[a-z_][a-z0-9_]*$.(ç‹‡J$3f2fd4e3-fb39-4fa5-b7f9-3e16f2eaf794
+]python:S125œ"Remove this commented out code.(Ç»©æJ$b9194f8f-53e5-4a23-9af0-575e0e259a05
+bpython:S125 "Remove this commented out code.(ÔÛ‘øÿÿÿÿJ$e1b9b919-6920-4ad5-97f2-18076a1ba649
+]python:S125¬"Remove this commented out code.(„Úä»J$6ef0515c-5c07-40d4-96d1-4e710bfad4c3

@@ -2,7 +2,8 @@ import pandas as pd
 import os
 import time
 from aliyun_security import Sample as sec
-from IISLog import  get_ip_addr as getIP
+import IISLog as iisLog
+
 # import sys
 
 # 指定要搜索的目录
@@ -19,7 +20,14 @@ def get_max_ips(path) -> []:
                      engine='python')
 
     ip_counts = df['c-ip'].value_counts()
-    frequent_ips = ip_counts[ip_counts > 350]
+    total_sec = iisLog.get_log_time(path)
+    max = int(os.environ['MAX_600'])
+    min = int(os.environ['MIN_600'])
+    print(f'total_sec:{total_sec}')
+    if total_sec < 600:
+        frequent_ips = ip_counts[ip_counts > min]
+    else:
+        frequent_ips = ip_counts[ip_counts > max]
     for ip, count in frequent_ips.items():
         print(f"最频繁的IP地址:{ip} {count}")
 
@@ -87,12 +95,12 @@ def add_ip_limit():
     print(f"{get_current_time()} log_path：{log_path}")
     log_ips = get_max_ips(log_path)
     for ip, count in log_ips.items():
-        ip_addr = getIP(ip)
+        ip_addr = iisLog.get_ip_addr(ip)
         time.sleep(1)
         print(f'{get_current_time()} {ip} {ip_addr}')
         description = f'{log_name} {count} {ip_addr}'
         sec.main(['cn-hangzhou',
-                  'sg-bp18qji31i7341eph4nq',
+                  'sg-bp11p8rar0xfagtk8r9x',
                   '80/443',
                   'drop',
                   'intranet',

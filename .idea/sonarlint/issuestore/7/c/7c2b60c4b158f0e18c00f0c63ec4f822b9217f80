@@ -1,0 +1,13 @@
+
+|python:S117"YRename this local variable "fileName" to match the regular expression ^[_a-z][a-z0-9_]*$.(££ø¤úÿÿÿÿ8¯¬¹ØŠ2
+Opython:S5806"+Rename this variable; it shadows a builtin.(££ø¤úÿÿÿÿ8¯¬¹ØŠ2
+zpython:S1542*"VRename function "get_dir_fileName" to match the regular expression ^[a-z_][a-z0-9_]*$.(¾³€úÿÿÿÿ8±¬¹ØŠ2
+zpython:S117["\Rename this local variable "currentTime" to match the regular expression ^[_a-z][a-z0-9_]*$.(Ã¼½Õ8±¬¹ØŠ2
+rpython:S1542E"SRename function "getCourseList" to match the regular expression ^[a-z_][a-z0-9_]*$.(×ğé†8±¬¹ØŠ2
+Kpython:S1481]",Remove the unused local variable "loop_len".(‡«ğ¯8±¬¹ØŠ2
+Ppython:S1481_",Remove the unused local variable "temp_len".(îÕÃüÿÿÿÿ8±¬¹ØŠ2
+spython:S3776E"TRefactor this function to reduce its Cognitive Complexity from 41 to the 15 allowed.(×ğé†8±¬¹ØŠ2
+Xpython:S1135Q"4Complete the task associated to this "TODO" comment.(îşÏüÿÿÿÿ8²¬¹ØŠ2
+Xpython:S1135f"4Complete the task associated to this "TODO" comment.(ÖÏßÀüÿÿÿÿ8²¬¹ØŠ2
+xpython:S1542s"TRename function "get_Courseware" to match the regular expression ^[a-z_][a-z0-9_]*$.(Ñ±öİøÿÿÿÿ8²¬¹ØŠ2
+upython:S117y"WRename this parameter "currentTime" to match the regular expression ^[_a-z][a-z0-9_]*$.(ğ¥Ëö8²¬¹ØŠ2

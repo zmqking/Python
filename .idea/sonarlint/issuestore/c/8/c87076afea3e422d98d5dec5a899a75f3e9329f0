@@ -1,0 +1,8 @@
+
+;python:S125
+"Remove this commented out code.(™Ÿ«‰ÿÿÿÿÿ
+mpython:S1542"PRename function "getImgurls" to match the regular expression ^[a-z_][a-z0-9_]*$.(Ò’œ¸şÿÿÿÿ
+Hpython:S5806"+Rename this variable; it shadows a builtin.(¬‰§øÿÿÿÿ
+opython:S1542!"RRename function "downloadImgs" to match the regular expression ^[a-z_][a-z0-9_]*$.(Îñèøÿÿÿÿ
+jpython:S1542+"RRename function "writeImgFile" to match the regular expression ^[a-z_][a-z0-9_]*$.(ıàæ€
+;python:S125y"Remove this commented out code.(ºšÅÅøÿÿÿÿ
