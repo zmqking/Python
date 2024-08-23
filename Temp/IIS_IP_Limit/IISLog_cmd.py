@@ -7,7 +7,7 @@ import IISLog as iisLog
 # import sys
 
 # 指定要搜索的目录
-log_directory = 'D:/Temp Files'  # 使用当前目录作为示例
+log_directory = os.environ['LOG_PATH'] #'D:/Temp Files'  # 使用当前目录作为示例
 
 
 def get_max_ips(path) -> []:

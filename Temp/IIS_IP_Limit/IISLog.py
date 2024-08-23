@@ -9,7 +9,8 @@ from lxml import etree
 import re
 
 # 指定要搜索的目录
-log_directory = 'C:/inetpub/logs/LogFiles/W3SVC12'  # 使用当前目录作为示例
+log_directory = os.environ['LOG_PATH']
+# 'C:/inetpub/logs/LogFiles/W3SVC12'  # 使用当前目录作为示例
 # log_directory = 'D:/Temp Files'  # 使用当前目录作为示例
 
 headrs = {
