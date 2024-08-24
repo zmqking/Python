@@ -3,7 +3,8 @@ import os
 # import sys
 import time
 # import schedule
-from aliyun_security import Sample as sec
+# from aliyun_security import Sample as sec
+import aliyun_security as sec
 import requests
 from lxml import etree
 import re
@@ -62,7 +63,7 @@ def get_max_ips(path) -> []:
         max = int(os.environ['MAX_600'])
         min = int(os.environ['MIN_600'])
         mid = int(os.environ['MID_600'])
-        print(f'total_sec:{total_sec}')
+        sec.logger.info(f'log total_sec:{total_sec}')
         if total_sec < 600: # 小于十分钟
             if total_sec < 180: # 小于3分钟以内
                 frequent_ips = ip_counts[ip_counts > min]
@@ -72,9 +73,9 @@ def get_max_ips(path) -> []:
             frequent_ips = ip_counts[ip_counts > max]
 
         for ip, count in frequent_ips.items():
-            print(f"最频繁的IP地址:{ip} {count}")
+            sec.logger.info(f"最频繁的IP地址:{ip} {count}")
     except Exception as ex:
-        print(ex)
+        sec.logger.error(ex)
 
         # 最常见的IP地址
         # print("最频繁的IP地址:")
@@ -147,7 +148,7 @@ def get_ip_addr(ip):
         ip_addr = address_match.group(1).strip() if address_match else None
         ip_addr = ip_addr.replace(' ', '')
     except Exception as ex:
-        print(ex)
+        sec.logger.error(ex)
 
     return ip_addr
 
@@ -156,22 +157,23 @@ def add_ip_limit():
     try:
         log_name = get_new_log()
         log_path = f"{log_directory}/{log_name}"
-        print(f"{get_current_time()} log_path：{log_path}")
+        sec.logger.info(f"{get_current_time()} log_path：{log_path}")
         log_ips = get_max_ips(log_path)
+        security_group = os.environ['SECURITY_GROUP']
         for ip, count in log_ips.items():
             ip_addr = get_ip_addr(ip)
             time.sleep(1)
-            print(f'{get_current_time()} {ip} {ip_addr}')
+            sec.logger.info(f'{get_current_time()} {ip} {ip_addr}')
             description = f'{log_name} {count} {ip_addr}'
-            sec.main(['cn-hangzhou',
-                      'sg-bp11p8rar0xfagtk8r9x',
+            sec.Sample.main(['cn-hangzhou',
+                      security_group,
                       '80/443',
                       'drop',
                       'intranet',
                       '1',
                       ip, description])
     except Exception as ex:
-        print(ex)
+        sec.logger.error(ex)
 
 
 if __name__ == '__main__':

@@ -4,6 +4,7 @@ import sys
 
 import os
 from typing import List
+import logging
 
 from alibabacloud_ecs20140526.client import Client as ECSClient
 from alibabacloud_tea_openapi import models as open_api_models
@@ -12,6 +13,13 @@ from alibabacloud_ecs20140526 import models as ecs_models
 from alibabacloud_tea_console.client import Client as ConsoleClient
 import time
 
+
+# 配置基本的日志设置
+logging.basicConfig(filename='app.log', level=logging.INFO,
+                    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+
+# 创建一个logger
+logger = logging.getLogger(__name__)
 
 class Sample:
     def __init__(self):
@@ -103,7 +111,7 @@ class Sample:
             client.authorize_security_group(req)
             # ConsoleClient.log('--------------------入方向安全组新增成功--------------------')
         except Exception as error:
-            ConsoleClient.log(error.message)
+            logger.info(error)
 
     @staticmethod
     async def authorize_security_group_async(
@@ -148,7 +156,7 @@ class Sample:
             await client.authorize_security_group_async(req)
             # ConsoleClient.log('--------------------入方向安全组新增成功--------------------')
         except Exception as error:
-            ConsoleClient.log(error.message)
+            ConsoleClient.log(error)
 
     def get_date_time(self):
         return time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
@@ -174,12 +182,12 @@ class Sample:
             security_group_res = Sample.describe_security_group_attribute(client, group_id, region_id)
             detail = security_group_res.body
             curr_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-            if len(detail.permissions.permission) > 0:
-                ConsoleClient.log(
-                    f'{curr_time} 安全组 {detail.security_group_name}({detail.security_group_id}) 入组规则添加成功：')
+            if len(detail.permissions.permission) < 200:
+                logger.info(
+                    f'安全组 {detail.security_group_name}({detail.security_group_id}) 入组规则添加成功：')
             else:
-                ConsoleClient.log(
-                    f'{curr_time} 安全组 {detail.security_group_name}({detail.security_group_id}) 入组规则添加失败！')
+                logger.info(
+                    f'安全组 {detail.security_group_name}({detail.security_group_id}) 入组规则添加失败,超出200上限。需新添加安全组！')
         except Exception as ex:
             ConsoleClient.error(ex)
 

@@ -4,8 +4,6 @@ import time
 from aliyun_security import Sample as sec
 import IISLog as iisLog
 
-# import sys
-
 # 指定要搜索的目录
 log_directory = os.environ['LOG_PATH'] #'D:/Temp Files'  # 使用当前目录作为示例
 
@@ -23,13 +21,18 @@ def get_max_ips(path) -> []:
     total_sec = iisLog.get_log_time(path)
     max = int(os.environ['MAX_600'])
     min = int(os.environ['MIN_600'])
-    print(f'total_sec:{total_sec}')
-    if total_sec < 600:
-        frequent_ips = ip_counts[ip_counts > min]
+    mid = int(os.environ['MID_600'])
+    sec.logger.info(f'total_sec:{total_sec}')
+    if total_sec < 600:  # 小于十分钟
+        if total_sec < 180:  # 小于3分钟以内
+            frequent_ips = ip_counts[ip_counts > min]
+        else:  # 3-10分钟区间
+            frequent_ips = ip_counts[ip_counts > mid]
     else:
         frequent_ips = ip_counts[ip_counts > max]
+
     for ip, count in frequent_ips.items():
-        print(f"最频繁的IP地址:{ip} {count}")
+        sec.logger.info(f"最频繁的IP地址:{ip} {count}")
 
     # 最常见的IP地址
     # print("最频繁的IP地址:")
@@ -92,20 +95,22 @@ def get_current_time():
 def add_ip_limit():
     log_name = get_new_log()
     log_path = f"{log_directory}/{log_name}"
-    print(f"{get_current_time()} log_path：{log_path}")
+    sec.logger.info(f"{get_current_time()} log_path：{log_path}")
     log_ips = get_max_ips(log_path)
+    security_group = os.environ['SECURITY_GROUP']
     for ip, count in log_ips.items():
         ip_addr = iisLog.get_ip_addr(ip)
         time.sleep(1)
-        print(f'{get_current_time()} {ip} {ip_addr}')
+        sec.logger.info(f'{get_current_time()} {ip} {ip_addr}')
         description = f'{log_name} {count} {ip_addr}'
         sec.main(['cn-hangzhou',
-                  'sg-bp11p8rar0xfagtk8r9x',
+                  # 'sg-bp11p8rar0xfagtk8r9x',
+                  security_group,
                   '80/443',
                   'drop',
                   'intranet',
                   '1',
-                  # '116.162.1.155',description])
+                  # '192.162.221.155',description])
                   ip, description])
 
 
