@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # This file is auto-generated, don't edit it. Thanks.
-import sys
 
 import os
 from typing import List
 import logging
 
+import SendEmail as email
 from alibabacloud_ecs20140526.client import Client as ECSClient
 from alibabacloud_tea_openapi import models as open_api_models
 from alibabacloud_darabonba_env.client import Client as EnvClient
@@ -186,8 +186,9 @@ class Sample:
                 logger.info(
                     f'安全组 {detail.security_group_name}({detail.security_group_id}) 入组规则添加成功：')
             else:
-                logger.info(
-                    f'安全组 {detail.security_group_name}({detail.security_group_id}) 入组规则添加失败,超出200上限。需新添加安全组！')
+                msg = f'安全组 {detail.security_group_name}({detail.security_group_id}) 入组规则添加失败,超出200上限。需新添加安全组！'
+                email.send_email(msg)
+                logger.info(msg)
         except Exception as ex:
             ConsoleClient.error(ex)
 

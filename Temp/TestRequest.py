@@ -6,7 +6,7 @@
 import  time
 import pandas as pd
 import re
-
+import SendEmail as email
 
 # 获取当前时间并格式化
 # formatted_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
@@ -35,33 +35,37 @@ import os
 #
 #     return ip_addr
 #
-def extract_time(log_line):
-    match = re.search(r'(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})', log_line)
-    return match.group(1) if match else None
-
-
-# 读取IIS日志文件
-log_file_path = 'D:/Temp Files/u_extend50222.log'  # 替换为您的日志文件路径
-start = time.time()
-if os.path.exists(log_file_path):
-    # 读取文件，跳过以 '#' 开头的行
-    with open(log_file_path, 'r',encoding='utf8') as file:
-        logs = [line.strip() for line in file if not line.startswith('#') and line.strip()]
-
-    # 提取时间
-    timestamps = [extract_time(log) for log in logs]
-    timestamps = [pd.to_datetime(ts) for ts in timestamps if ts]
-
-    if timestamps:
-        earliest_time = min(timestamps)
-        latest_time = max(timestamps)
-        print(f'最早的时间: {earliest_time}')
-        print(f'最晚的时间: {latest_time}')
-        print(f'时间相隔: {(latest_time-earliest_time).total_seconds()}')
-        print(f'success:{time.time()-start}')
-    else:
-        print('日志文件中没有有效的时间戳。')
-else:
-    print(f'错误：文件 "{log_file_path}" 不存在。')
+# def extract_time(log_line):
+#     match = re.search(r'(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})', log_line)
+#     return match.group(1) if match else None
+#
+#
+# # 读取IIS日志文件
+# log_file_path = 'D:/Temp Files/u_extend50222.log'  # 替换为您的日志文件路径
+# start = time.time()
+# if os.path.exists(log_file_path):
+#     # 读取文件，跳过以 '#' 开头的行
+#     with open(log_file_path, 'r',encoding='utf8') as file:
+#         logs = [line.strip() for line in file if not line.startswith('#') and line.strip()]
+#
+#     # 提取时间
+#     timestamps = [extract_time(log) for log in logs]
+#     timestamps = [pd.to_datetime(ts) for ts in timestamps if ts]
+#
+#     if timestamps:
+#         earliest_time = min(timestamps)
+#         latest_time = max(timestamps)
+#         print(f'最早的时间: {earliest_time}')
+#         print(f'最晚的时间: {latest_time}')
+#         print(f'时间相隔: {(latest_time-earliest_time).total_seconds()}')
+#         print(f'success:{time.time()-start}')
+#     else:
+#         print('日志文件中没有有效的时间戳。')
+# else:
+#     print(f'错误：文件 "{log_file_path}" 不存在。')
 
 # print(get_ip_addr('125.211.195.112'))
+
+
+msg = f'安全组 ,超出200上限。需新添加安全组！'
+email.send_email(msg)
