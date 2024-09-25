@@ -13,7 +13,6 @@ from alibabacloud_ecs20140526 import models as ecs_models
 from alibabacloud_tea_console.client import Client as ConsoleClient
 import time
 
-
 # 配置基本的日志设置
 logging.basicConfig(filename='app.log', level=logging.INFO,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -21,7 +20,11 @@ logging.basicConfig(filename='app.log', level=logging.INFO,
 # 创建一个logger
 logger = logging.getLogger(__name__)
 
+
 class Sample:
+    group_index = 0
+    group_ids = []
+
     def __init__(self):
         pass
 
@@ -166,29 +169,27 @@ class Sample:
             args: List[str],
     ) -> None:
         try:
-            region_id = args[0]
-            client = Sample.initialization(region_id)
-            group_id = args[1]
-            port_range = args[2]
-            nic_type = args[3]
-            policy = args[4]
-            proiority = args[5]
-            source_cidr_ip = args[6]
-            description = args[7]
-            # 修改安全组入方向规则
-            Sample.authorize_security_group(client, group_id, region_id, port_range, policy, nic_type, proiority,
-                                            source_cidr_ip, description)
-            # 查询安全组的详情
-            security_group_res = Sample.describe_security_group_attribute(client, group_id, region_id)
-            detail = security_group_res.body
-            curr_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-            if len(detail.permissions.permission) < 200:
+            Sample.get_group_ids()
+
+            detail, flag = Sample.get_group_response(args, Sample.group_ids[Sample.group_index])
+            # curr_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+            if flag:  # 组小于200规则
                 logger.info(
                     f'安全组 {detail.security_group_name}({detail.security_group_id}) 入组规则添加成功：')
             else:
-                msg = f'安全组 {detail.security_group_name}({detail.security_group_id}) 入组规则添加失败,超出200上限。需新添加安全组！'
-                email.send_email(msg)
-                logger.info(msg)
+                if Sample.group_index < 4:
+                    Sample.group_index += 1
+                    detail, flag = Sample.get_group_response(args, Sample.group_ids[Sample.group_index])
+                    while not flag and Sample.group_index < 4:
+                        Sample.group_index += 1
+                        detail, flag = Sample.get_group_response(args, Sample.group_ids[Sample.group_index])
+                    if not flag:
+                        Sample.fail_log(detail)
+                    else:
+                        logger.info(
+                            f'安全组 {detail.security_group_name}({detail.security_group_id}) 入组规则添加成功：')
+                else:
+                    Sample.fail_log(detail)
         except Exception as ex:
             ConsoleClient.error(ex)
 
@@ -202,6 +203,40 @@ class Sample:
         #     ConsoleClient.log(f'   访问权限： {permission.policy};')
         #     ConsoleClient.log(f'   规则优先级： {permission.priority};')
         #     ConsoleClient.log(f'   创建时间： {permission.create_time};')
+
+    @staticmethod
+    def fail_log(detail):
+        msg = f'安全组 {detail.security_group_name}({detail.security_group_id}) 入组规则添加失败,超出200上限。需新添加安全组！'
+        email.send_email(msg)
+        logger.info(msg)
+
+    @staticmethod
+    def get_group_ids():
+        if len(Sample.group_ids) == 0:
+            security_group = os.environ['SECURITY_GROUP']
+            security_groups = security_group.split(',')
+            for i, item in security_groups:
+                Sample.group_ids[i] = item
+
+    @staticmethod
+    def get_group_response(args, group_name):
+        region_id = args[0]
+        client = Sample.initialization(region_id)
+        group_id = group_name
+        port_range = args[2]
+        nic_type = args[3]
+        policy = args[4]
+        proiority = args[5]
+        source_cidr_ip = args[6]
+        description = args[7]
+        # 修改安全组入方向规则
+        Sample.authorize_security_group(client, group_id, region_id, port_range, policy, nic_type, proiority,
+                                        source_cidr_ip, description)
+        # 查询安全组的详情
+        security_group_res = Sample.describe_security_group_attribute(client, group_id, region_id)
+        detail = security_group_res.body
+        flag = len(detail.permissions.permission) < 200
+        return detail, flag
 
     @staticmethod
     async def main_async(

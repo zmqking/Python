@@ -59,6 +59,10 @@ def get_max_ips(path) -> []:
                          engine='python')
 
         ip_counts = df['c-ip'].value_counts()
+        # 大致判断是否为后台操作
+        urls = df['cs-uri-stem'].values()
+
+        str_url = any(search_string in item for item in urls)
         total_sec = get_log_time(path)
         max = int(os.environ['MAX_600'])
         min = int(os.environ['MIN_600'])
