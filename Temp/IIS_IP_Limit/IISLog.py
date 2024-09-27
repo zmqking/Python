@@ -48,7 +48,7 @@ def get_log_time(log_file_path):
 
 
 def get_max_ips(path) -> []:
-    frequent_ips = []
+    global frequent_ips
     try:
         # 定义日志字段名称
         log_field_names = ['date', 'time', 's-ip', 'cs-method', 'cs-uri-stem', 'cs-uri-query',
@@ -58,11 +58,14 @@ def get_max_ips(path) -> []:
         df = pd.read_csv(path, sep=' ', comment='#', names=log_field_names,
                          engine='python')
 
-        ip_counts = df['c-ip'].value_counts()
-        # 大致判断是否为后台操作
-        urls = df['cs-uri-stem'].values()
+        # ip_counts = df['c-ip'].value_counts()
 
-        str_url = any(search_string in item for item in urls)
+        # 查找包含特定字符串的行
+        target_rows = df[df['cs-uri-stem'].str.contains('XueXiKeChen/UpTimeShiPin', na=False)]
+
+        # 按IP地址分组并计算出现次数
+        url_ip_counts = target_rows.groupby('c-ip').size().sort_values(ascending=False)
+
         total_sec = get_log_time(path)
         max = int(os.environ['MAX_600'])
         min = int(os.environ['MIN_600'])
@@ -70,28 +73,19 @@ def get_max_ips(path) -> []:
         sec.logger.info(f'log total_sec:{total_sec}')
         if total_sec < 600: # 小于十分钟
             if total_sec < 180: # 小于3分钟以内
-                frequent_ips = ip_counts[ip_counts > min]
+                # frequent_ips = ip_counts[ip_counts > min]
+                frequent_ips = url_ip_counts[url_ip_counts > min]
             else:# 3-10分钟区间
-                frequent_ips = ip_counts[ip_counts > mid]
+                # frequent_ips = ip_counts[ip_counts > mid]
+                frequent_ips = url_ip_counts[url_ip_counts > mid]
         else:
-            frequent_ips = ip_counts[ip_counts > max]
+            # frequent_ips = ip_counts[ip_counts > max]
+            frequent_ips = url_ip_counts[url_ip_counts > max]
 
-        for ip, count in frequent_ips.items():
-            sec.logger.info(f"最频繁的IP地址:{ip} {count}")
+        # res_ips = url_ip_counts[url_ip_counts.index.isin(frequent_ips.index)]
     except Exception as ex:
         sec.logger.error(ex)
 
-        # 最常见的IP地址
-        # print("最频繁的IP地址:")
-        # print(df['c-ip'].value_counts().head())
-        # # 最常访问的URL
-        # print("\n最常访问的URL:")
-        # print(df['cs-uri-stem'].value_counts().head())
-        # # HTTP状态码统计
-        # print("\nHTTP状态码统计:")
-        # print(df['sc-status'].value_counts())
-        # # 平均响应时间
-        # print(f"\n平均响应时间: {df['time-taken'].mean():.2f} ms")
     return frequent_ips
 
 
@@ -164,17 +158,23 @@ def add_ip_limit():
         sec.logger.info(f"{get_current_time()} log_path：{log_path}")
         log_ips = get_max_ips(log_path)
         security_group = os.environ['SECURITY_GROUP']
+        # temp_ips = ['110.53.230.36','119.33.230.37','130.59.230.37',
+        #             '150.53.200.37','120.59.280.67','190.73.280.37',
+        #             '120.59.280.36','220.53.289.37','120.59.220.37',
+        #             '120.53.280.37','119.53.230.87','110.53.250.38',
+        #             '110.57.230.35','111.53.231.37']
         for ip, count in log_ips.items():
             ip_addr = get_ip_addr(ip)
             time.sleep(1)
             sec.logger.info(f'{get_current_time()} {ip} {ip_addr}')
             description = f'{log_name} {count} {ip_addr}'
+            # description = '【测试自动切换安全组】'
             sec.Sample.main(['cn-hangzhou',
                       security_group,
                       '80/443',
                       'drop',
                       'intranet',
-                      '1',
+                      '5',
                       ip, description])
     except Exception as ex:
         sec.logger.error(ex)
@@ -185,7 +185,7 @@ if __name__ == '__main__':
 
     while True:
         add_ip_limit()
-        time.sleep(300)
+        time.sleep(60)
 
     # schedule.every(6).minutes.do(add_ip_limit)
     # print('start application...')

@@ -102,14 +102,15 @@ def add_ip_limit():
         ip_addr = iisLog.get_ip_addr(ip)
         time.sleep(1)
         sec.logger.info(f'{get_current_time()} {ip} {ip_addr}')
-        description = f'{log_name} {count} {ip_addr}'
+        # description = f'{log_name} {count} {ip_addr}'
+        description = f'测试自动切换安全组'
         sec.main(['cn-hangzhou',
                   # 'sg-bp11p8rar0xfagtk8r9x',
                   security_group,
                   '80/443',
                   'drop',
                   'intranet',
-                  '1',
+                  '5',
                   # '192.162.221.155',description])
                   ip, description])
 

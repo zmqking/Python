@@ -1,5 +1,7 @@
 
-upython:S5806"+Rename this variable; it shadows a builtin.(Šµşùÿÿÿÿ8«ÔÆ˜˜2J$43eee63d-139b-4a19-b828-1d665d0b9da2
-upython:S5806"+Rename this variable; it shadows a builtin.(õ’—ûÿÿÿÿ8«ÔÆ˜˜2J$d343290c-18ac-46aa-b530-ff456c603ed6
-cpython:S125%"Remove this commented out code.(Áí¼²8«ÔÆ˜˜2J$53e45822-b5a9-421a-b891-50494fa3065d
-hpython:S125U"Remove this commented out code.(‘Æùùùÿÿÿÿ8¬ÔÆ˜˜2J$e56da495-0e25-47a7-916e-12e330b2993e
+upython:S5806"+Rename this variable; it shadows a builtin.(Šµşùÿÿÿÿ8«ÔÆ˜˜2J$8733283e-eed8-42b9-bef8-833e8de1f2eb
+upython:S5806"+Rename this variable; it shadows a builtin.(õ’—ûÿÿÿÿ8«ÔÆ˜˜2J$c509ca5e-76f7-4fac-ada0-582be34ebf49
+cpython:S125%"Remove this commented out code.(Áí¼²8«ÔÆ˜˜2J$d518cb1e-1c5a-4750-9f68-7962198407fd
+hpython:S125U"Remove this commented out code.(‘Æùùùÿÿÿÿ8¬ÔÆ˜˜2J$35b1a2ff-c0c4-4a15-903e-5e8c6cc5058a
+hpython:S125i"Remove this commented out code.(–ï©ÿùÿÿÿÿ8şãâ¢2J$65dd74fb-ba50-4da9-9281-a6ecdaf5a3a8
+python:S3457j"EAdd replacement fields or use a normal string instead of an f-string.(İï¶üÿÿÿÿ8ÿãâ¢2J$ba9c0b2c-c489-4b75-9091-c0018f1ade61

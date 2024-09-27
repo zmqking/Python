@@ -24,6 +24,7 @@ logger = logging.getLogger(__name__)
 class Sample:
     group_index = 0
     group_ids = []
+    send_mail_count = 0
 
     def __init__(self):
         pass
@@ -206,17 +207,17 @@ class Sample:
 
     @staticmethod
     def fail_log(detail):
-        msg = f'安全组 {detail.security_group_name}({detail.security_group_id}) 入组规则添加失败,超出200上限。需新添加安全组！'
-        email.send_email(msg)
-        logger.info(msg)
+        if Sample.send_mail_count == 0:
+            msg = f'安全组 {detail.security_group_name}({detail.security_group_id}) 入组规则添加失败,超出200上限。需新添加安全组！'
+            email.send_email(msg)
+            logger.info(msg)
+            Sample.send_mail_count += 1
 
     @staticmethod
     def get_group_ids():
         if len(Sample.group_ids) == 0:
             security_group = os.environ['SECURITY_GROUP']
-            security_groups = security_group.split(',')
-            for i, item in security_groups:
-                Sample.group_ids[i] = item
+            Sample.group_ids = security_group.split(',')
 
     @staticmethod
     def get_group_response(args, group_name):
@@ -229,13 +230,15 @@ class Sample:
         proiority = args[5]
         source_cidr_ip = args[6]
         description = args[7]
-        # 修改安全组入方向规则
-        Sample.authorize_security_group(client, group_id, region_id, port_range, policy, nic_type, proiority,
-                                        source_cidr_ip, description)
         # 查询安全组的详情
         security_group_res = Sample.describe_security_group_attribute(client, group_id, region_id)
         detail = security_group_res.body
         flag = len(detail.permissions.permission) < 200
+        if flag:
+            # 修改安全组入方向规则
+            Sample.authorize_security_group(client, group_id, region_id, port_range, policy, nic_type, proiority,
+                                            source_cidr_ip, description)
+
         return detail, flag
 
     @staticmethod

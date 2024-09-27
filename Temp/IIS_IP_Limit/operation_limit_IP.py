@@ -14,7 +14,7 @@ from alibabacloud_tea_util.client import Client as UtilClient
 
 class Sample:
     group_ids = []
-    temp_group_ips = []
+    temp_group_ips = {}
 
     def __init__(self):
         pass
@@ -75,9 +75,10 @@ class Sample:
                 #  'source_port_range': '', 'source_prefix_list_id': '', 'source_prefix_list_name': ''}
 
                 # Sample.temp_group_ips.append(ips.body.permissions.permission)
+                Sample.temp_group_ips[gruop_name] = len(ips.body.permissions.permission)
                 for ip in ips.body.permissions.permission:
                     data_dict = ip.__dict__
-                    if data_dict['source_cidr_ip'].startswith(args[0]):
+                    if data_dict['source_cidr_ip'].find(args[0]) > -1:
                         print(
                             f"是否允许:【{data_dict['policy']}】 优先级:【{data_dict['priority']}】 安全组名:【{gruop_name}】 源IP:【{data_dict['source_cidr_ip']}】 描述:【{data_dict['description']}】 创建时间:【{data_dict['create_time']}】")
 
@@ -88,6 +89,8 @@ class Sample:
                 # 诊断地址
                 print(error.data.get("Recommend"))
                 UtilClient.assert_as_string(error.message)
+
+        print(Sample.temp_group_ips)
 
     @staticmethod
     async def main_async(
