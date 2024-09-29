@@ -209,7 +209,7 @@ class Sample:
     def fail_log(detail):
         if Sample.send_mail_count == 0:
             msg = f'安全组 {detail.security_group_name}({detail.security_group_id}) 入组规则添加失败,超出200上限。需新添加安全组！'
-            email.send_email(msg)
+            email.send_email(msg,'安全组规则已满！！！')
             logger.info(msg)
             Sample.send_mail_count += 1
 

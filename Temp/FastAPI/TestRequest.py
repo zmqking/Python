@@ -13,16 +13,8 @@ from alibabacloud_tea_util.client import Client as UtilClient
 
 
 class Sample:
-    group_ids = []
-
     def __init__(self):
         pass
-
-    @staticmethod
-    def get_group_ids():
-        if len(Sample.group_ids) == 0:
-            security_group = os.environ['SECURITY_GROUP']
-            Sample.group_ids = security_group.split(',')
 
     @staticmethod
     def create_client() -> Ecs20140526Client:
@@ -48,44 +40,40 @@ class Sample:
             args: List[str],
     ) -> None:
         client = Sample.create_client()
+        revoke_security_group_request = ecs_20140526_models.RevokeSecurityGroupRequest(
+            region_id='cn-hangzhou',
+            source_cidr_ip='60.191.17.0/24',
+            security_group_id='sg-bp1883ha8ul4weirfk1i',
+            ip_protocol='TCP',
+            port_range='80/443',
+            security_group_rule_id='sgr-bp1el9np5nvijgvx9nq9'
+        )
         runtime = util_models.RuntimeOptions()
-        Sample.get_group_ids()
-        for gruop_name in Sample.group_ids:
-            describe_security_group_attribute_request = ecs_20140526_models.DescribeSecurityGroupAttributeRequest(
-                region_id='cn-hangzhou',
-                security_group_id=gruop_name
-            )
-            try:
-                # 复制代码运行请自行打印 API 的返回值
-                ips = client.describe_security_group_attribute_with_options(describe_security_group_attribute_request,
-                                                                        runtime)
-                for ip in ips.body.permissions.permission:
-                    data_dict = ip.__dict__
-                    if data_dict['source_cidr_ip'].startswith(args[0]):
-                        # print(data_dict)
-                        print(f"priority:{data_dict['priority']}；gruop_name:{gruop_name}；source_cidr_ip:{data_dict['source_cidr_ip']}；description:{data_dict['description']}；create_time:{data_dict['create_time']}")
-            except Exception as error:
-                # 此处仅做打印展示，请谨慎对待异常处理，在工程项目中切勿直接忽略异常。
-                # 错误 message
-                print(error.message)
-                # 诊断地址
-                print(error.data.get("Recommend"))
-                UtilClient.assert_as_string(error.message)
+        try:
+            # 复制代码运行请自行打印 API 的返回值
+            test = client.revoke_security_group_with_options(revoke_security_group_request, runtime)
+            print(test)
+        except Exception as error:
+            # 此处仅做打印展示，请谨慎对待异常处理，在工程项目中切勿直接忽略异常。
+            # 错误 message
+            print(error.message)
+            # 诊断地址
+            print(error.data.get("Recommend"))
+            UtilClient.assert_as_string(error.message)
 
     @staticmethod
     async def main_async(
             args: List[str],
     ) -> None:
         client = Sample.create_client()
-        describe_security_group_attribute_request = ecs_20140526_models.DescribeSecurityGroupAttributeRequest(
+        revoke_security_group_request = ecs_20140526_models.RevokeSecurityGroupRequest(
             region_id='cn-hangzhou',
-            security_group_id='sg-bp1fb9izx957135qhtqu'
+            source_cidr_ip='60.191.17.66'
         )
         runtime = util_models.RuntimeOptions()
         try:
             # 复制代码运行请自行打印 API 的返回值
-            await client.describe_security_group_attribute_with_options_async(describe_security_group_attribute_request,
-                                                                              runtime)
+            await client.revoke_security_group_with_options_async(revoke_security_group_request, runtime)
         except Exception as error:
             # 此处仅做打印展示，请谨慎对待异常处理，在工程项目中切勿直接忽略异常。
             # 错误 message
@@ -96,4 +84,4 @@ class Sample:
 
 
 if __name__ == '__main__':
-    Sample.main(['119.39'])
+    Sample.main([''])

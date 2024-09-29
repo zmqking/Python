@@ -3,12 +3,12 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import os
 
-sender_email = "276324922@qq.com"  # Modify to your email address
+sender_email = os.environ["SENDER_EMAIL"]  # Modify to your email address
 sender_password = os.environ["EMAIL_PWD"]  # Modify to your email password
-receiver_email = "276324922@qq.com"  # Modify to receiver email address
-subject = "Disk Space Warning"
+receiver_email = os.environ["SENDER_EMAIL"]  # Modify to receiver email address
 
-def send_email(message):
+
+def send_email(message, subject):
     try:
         # Setup email message
         msg = MIMEMultipart()

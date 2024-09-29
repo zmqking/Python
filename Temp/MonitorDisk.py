@@ -7,16 +7,9 @@ import psutil
 import os
 import schedule
 import time
-import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
-import atexit
-
+import SendEmail as email
 
 class Monitor():
-    sender_email = "276324922@qq.com"  # Modify to your email address
-    sender_password = "yvqkogpmqjssbgjf"  # Modify to your email password
-    receiver_email = "276324922@qq.com"  # Modify to receiver email address
     subject = "Disk Space Warning"
 
     def check_disk_space(self, path, min_space):
@@ -41,30 +34,11 @@ class Monitor():
             oldest_file = min(files, key=os.path.getctime)
         return oldest_file
 
-    def send_email(self, message):
-        try:
-            # Setup email message
-            msg = MIMEMultipart()
-            msg['From'] = self.sender_email
-            msg['To'] = self.receiver_email
-            msg['Subject'] = self.subject
-            msg.attach(MIMEText(message, 'plain'))
-
-            # Connect to SMTP server
-            server = smtplib.SMTP_SSL('smtp.qq.com', 465)
-            server.login(self.sender_email, self.sender_password)
-
-            # Send email
-            server.send_message(msg)
-
-            # Quit SMTP server
-            server.quit()
-        except Exception as ex:
-            print(f'send email error:{ex}')
-
     def job(self):
         # del_directory = "E:\Chrome\gate"
-        del_directory = "D:\DBBase\MSSQL10.MSSQL2008\MSSQL\Backup\ZL_TrainingPlatform"
+        del_directory = os.environ['DEL_BAK_DIRECTORY']
+        server_tag = os.environ['SERVER_TAG']
+        # del_directory = "D:\DBBase\MSSQL10.MSSQL2008\MSSQL\Backup\ZL_TrainingPlatform"
 
         disk_path = "D:\\"  # Modify to your D drive path
         min_disk_space = 5  # Minimum required space in GB
@@ -73,15 +47,17 @@ class Monitor():
         if len(oldest_file) > 0:
             self.del_files(oldest_file)
             _, free_space = self.check_disk_space(disk_path, min_disk_space)
-            self.send_email(
-                f'disk space remaining: {round(free_space, 2)}G \r\n deleted dabase backup files:{oldest_file}')
+            email.send_email(
+                f'disk space remaining: {round(free_space, 2)}G \r\n deleted dabase backup files:{oldest_file}',
+                Monitor.subject)
         else:
             print('Number of database files less than 5')
-            self.send_email('168 server Number of database backup files less than 5')
+            email.send_email(f'{server_tag} server Number of database backup files less than 5', Monitor.subject)
 
         flag, _ = self.check_disk_space(disk_path, min_disk_space)
         if flag:
-            self.send_email('168 server Disk space is less than 5GB. Please free up space immediately.')
+            email.send_email(f'{server_tag} server Disk space is less than 5GB. Please free up space immediately.',
+                             Monitor.subject)
             print("Disk space is less than 5GB. send mail notice...")
             # self.del_files(disk_path)
         else:
